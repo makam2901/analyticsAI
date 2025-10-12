@@ -1,0 +1,1969 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics AI - Fast-Track Your Data Analysis 🚀</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .spinner { animation: spin 1s linear infinite; }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .custom-scrollbar::-webkit-scrollbar { width: 8px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #a8a29e; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #78716c; }
+        .feature-card { transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; }
+        .feature-card:hover { transform: translateY(-5px); }
+        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .code-gradient { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .data-gradient { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+        .viz-gradient { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
+        
+        /* Modal styles */
+        .modal-backdrop {
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+        
+        .modal-enter {
+            animation: modalEnter 0.3s ease-out;
+        }
+        
+        @keyframes modalEnter {
+            from {
+                opacity: 0;
+                transform: scale(0.9) translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+        
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .tab-button.active { 
+            border-color: #3b82f6; 
+            color: #3b82f6; 
+            background-color: #eff6ff; 
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <!-- Main Container -->
+    <div id="mainContainer" class="min-h-screen">
+        <!-- Navigation -->
+        <nav class="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-16">
+                    <div class="flex items-center">
+                        <h1 class="text-2xl font-bold text-blue-600">Analytics AI</h1>
+                        <div class="ml-8 flex space-x-6" id="navTabs">
+                            <button data-tab="home" class="tab-button active border-b-2 font-medium px-1 py-4 text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300">
+                                Home
+                            </button>
+                            <button data-tab="data" class="tab-button border-b-2 font-medium px-1 py-4 text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300 hidden">
+                                Data
+                            </button>
+                            <button data-tab="analysis" class="tab-button border-b-2 font-medium px-1 py-4 text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300 hidden">
+                                Analysis
+                            </button>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <button onclick="scrollToSection('features')" class="text-gray-600 hover:text-blue-600 transition-colors">Features</button>
+                        <button onclick="scrollToSection('how-it-works')" class="text-gray-600 hover:text-blue-600 transition-colors">How it Works</button>
+                        <button onclick="scrollToSection('motivation')" class="text-gray-600 hover:text-blue-600 transition-colors">Why We Built This</button>
+                        <button onclick="showAuthModal()" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors" id="getStartedBtn">Get Started</button>
+                        <button onclick="logout()" class="text-gray-600 hover:text-blue-600 transition-colors hidden" id="logoutBtn">Logout</button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Home Tab Content -->
+        <div id="homeContent" class="tab-content active">
+            <!-- Hero Section -->
+            <section class="relative py-20 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
+                <div class="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-purple-600/10"></div>
+                <div class="relative max-w-7xl mx-auto px-8 text-center">
+                    <div class="mb-8">
+                        <h1 class="text-6xl font-bold text-gray-900 mb-6">
+                            Analytics AI
+                        </h1>
+                        <p class="text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed mb-8">
+                            Fast-track your data analysis journey. Spend more time on insights, 
+                            less time on data aggregation and code generation.
+                        </p>
+                        <div class="bg-white rounded-2xl p-6 shadow-lg max-w-3xl mx-auto mb-8">
+                            <p class="text-lg text-gray-700 font-medium">
+                                "We need to spend more time analyzing the aggregated data 
+                                rather than aggregating the data into analysis."
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                        <button onclick="goToData()" class="bg-blue-600 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:bg-blue-700 transition-colors shadow-lg hover:shadow-xl">
+                            Start Analyzing
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Features Section -->
+            <section id="features" class="py-20 bg-white">
+                <div class="max-w-7xl mx-auto px-8">
+                    <div class="text-center mb-16">
+                        <h2 class="text-4xl font-bold text-gray-900 mb-4">Powerful Features</h2>
+                        <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                            Everything you need to transform raw data into actionable insights
+                        </p>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <!-- GCS Integration -->
+                        <div class="feature-card bg-gradient-to-br from-blue-50 to-blue-100 p-8 rounded-2xl hover:shadow-lg">
+                            <div class="w-16 h-16 bg-blue-600 rounded-xl flex items-center justify-center mb-6">
+                                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-2xl font-bold text-gray-900 mb-4">Direct GCS Integration</h3>
+                            <p class="text-gray-600 leading-relaxed">
+                                Connect directly to Google Cloud Storage and access your data instantly. 
+                                No more manual downloads or complex setup processes.
+                            </p>
+                        </div>
+
+                        <!-- Code Generation -->
+                        <div class="feature-card bg-gradient-to-br from-purple-50 to-purple-100 p-8 rounded-2xl hover:shadow-lg">
+                            <div class="w-16 h-16 bg-purple-600 rounded-xl flex items-center justify-center mb-6">
+                                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-2xl font-bold text-gray-900 mb-4">AI Code Generation</h3>
+                            <p class="text-gray-600 leading-relaxed">
+                                Generate Python and SQL code from natural language queries. 
+                                Transform your questions into executable code instantly.
+                            </p>
+                        </div>
+
+                        <!-- Data Aggregation -->
+                        <div class="feature-card bg-gradient-to-br from-green-50 to-green-100 p-8 rounded-2xl hover:shadow-lg">
+                            <div class="w-16 h-16 bg-green-600 rounded-xl flex items-center justify-center mb-6">
+                                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-2xl font-bold text-gray-900 mb-4">Smart Data Aggregation</h3>
+                            <p class="text-gray-600 leading-relaxed">
+                                View aggregated tables and summaries automatically. 
+                                Skip the tedious data preparation and focus on insights.
+                            </p>
+                        </div>
+
+                        <!-- Visualizations -->
+                        <div class="feature-card bg-gradient-to-br from-orange-50 to-orange-100 p-8 rounded-2xl hover:shadow-lg">
+                            <div class="w-16 h-16 bg-orange-600 rounded-xl flex items-center justify-center mb-6">
+                                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-2xl font-bold text-gray-900 mb-4">Auto-Generated Visualizations</h3>
+                            <p class="text-gray-600 leading-relaxed">
+                                Create beautiful charts and graphs automatically. 
+                                Let AI suggest the best visualization for your data.
+                            </p>
+                        </div>
+
+                        <!-- Natural Language Queries -->
+                        <div class="feature-card bg-gradient-to-br from-teal-50 to-teal-100 p-8 rounded-2xl hover:shadow-lg">
+                            <div class="w-16 h-16 bg-teal-600 rounded-xl flex items-center justify-center mb-6">
+                                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-2xl font-bold text-gray-900 mb-4">Natural Language Interface</h3>
+                            <p class="text-gray-600 leading-relaxed">
+                                Ask questions in plain English and get instant answers. 
+                                No need to learn complex query languages.
+                            </p>
+                        </div>
+
+                        <!-- Real-time Processing -->
+                        <div class="feature-card bg-gradient-to-br from-pink-50 to-pink-100 p-8 rounded-2xl hover:shadow-lg">
+                            <div class="w-16 h-16 bg-pink-600 rounded-xl flex items-center justify-center mb-6">
+                                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-2xl font-bold text-gray-900 mb-4">Lightning Fast Processing</h3>
+                            <p class="text-gray-600 leading-relaxed">
+                                Get results in seconds, not hours. Optimized for speed 
+                                without compromising on accuracy or depth of analysis.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Workflow Section -->
+            <section id="how-it-works" class="py-20 bg-gray-50">
+                <div class="max-w-7xl mx-auto px-8">
+                    <div class="text-center mb-16">
+                        <h2 class="text-4xl font-bold text-gray-900 mb-4">How It Works</h2>
+                        <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                            A streamlined process to transform your data into insights
+                        </p>
+                    </div>
+
+                    <div class="bg-white rounded-3xl shadow-2xl p-12">
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                            <!-- Step 1 -->
+                            <div class="text-center">
+                                <div class="w-20 h-20 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
+                                    <span class="text-2xl font-bold text-white">1</span>
+                                </div>
+                                <h3 class="text-xl font-bold text-gray-900 mb-3">Connect Data</h3>
+                                <p class="text-gray-600 leading-relaxed">
+                                    Link your data directly from Google Cloud Storage. 
+                                    No downloads, no setup hassles.
+                                </p>
+                            </div>
+
+                            <!-- Arrow 1 -->
+                            <div class="hidden lg:flex items-center justify-center">
+                                <svg class="w-12 h-12 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                                </svg>
+                            </div>
+
+                            <!-- Step 2 -->
+                            <div class="text-center">
+                                <div class="w-20 h-20 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
+                                    <span class="text-2xl font-bold text-white">2</span>
+                                </div>
+                                <h3 class="text-xl font-bold text-gray-900 mb-3">Ask Questions</h3>
+                                <p class="text-gray-600 leading-relaxed">
+                                    Ask your questions in natural language. 
+                                    "What's the trend in sales this quarter?"
+                                </p>
+                            </div>
+
+                            <!-- Arrow 2 -->
+                            <div class="hidden lg:flex items-center justify-center">
+                                <svg class="w-12 h-12 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                                </svg>
+                            </div>
+
+                            <!-- Step 3 -->
+                            <div class="text-center">
+                                <div class="w-20 h-20 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
+                                    <span class="text-2xl font-bold text-white">3</span>
+                                </div>
+                                <h3 class="text-xl font-bold text-gray-900 mb-3">Get Code & Results</h3>
+                                <p class="text-gray-600 leading-relaxed">
+                                    Receive generated Python/SQL code and instant 
+                                    aggregated results with visualizations.
+                                </p>
+                            </div>
+
+                            <!-- Arrow 3 -->
+                            <div class="hidden lg:flex items-center justify-center">
+                                <svg class="w-12 h-12 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                                </svg>
+                            </div>
+
+                            <!-- Step 4 -->
+                            <div class="text-center">
+                                <div class="w-20 h-20 bg-orange-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
+                                    <span class="text-2xl font-bold text-white">4</span>
+                                </div>
+                                <h3 class="text-xl font-bold text-gray-900 mb-3">Analyze & Iterate</h3>
+                                <p class="text-gray-600 leading-relaxed">
+                                    Focus on insights, not data preparation. 
+                                    Iterate quickly with new questions and deeper analysis.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Motivation Section -->
+            <section id="motivation" class="py-20 bg-white">
+                <div class="max-w-7xl mx-auto px-8">
+                    <div class="text-center mb-16">
+                        <h2 class="text-4xl font-bold text-gray-900 mb-6">Why We Built Analytics AI</h2>
+                        <div class="max-w-4xl mx-auto">
+                            <p class="text-xl text-gray-600 leading-relaxed mb-8">
+                                After spending countless hours aggregating data and writing boilerplate code, we realized something crucial: 
+                                <strong>data analysts and scientists spend 80% of their time on data preparation and only 20% on actual analysis.</strong>
+                            </p>
+                            
+                            <div class="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-8 shadow-lg border border-gray-100">
+                                <div class="grid md:grid-cols-2 gap-8 items-center">
+                                    <div>
+                                        <h3 class="text-2xl font-bold text-gray-900 mb-4">The Problem</h3>
+                                        <ul class="text-gray-600 space-y-3">
+                                            <li class="flex items-start">
+                                                <span class="text-red-500 mr-3 mt-1">✗</span>
+                                                <span>Hours spent downloading and preprocessing data</span>
+                                            </li>
+                                            <li class="flex items-start">
+                                                <span class="text-red-500 mr-3 mt-1">✗</span>
+                                                <span>Repetitive SQL and Python boilerplate code</span>
+                                            </li>
+                                            <li class="flex items-start">
+                                                <span class="text-red-500 mr-3 mt-1">✗</span>
+                                                <span>Manual data aggregation and table creation</span>
+                                            </li>
+                                            <li class="flex items-start">
+                                                <span class="text-red-500 mr-3 mt-1">✗</span>
+                                                <span>Limited time for actual insights and analysis</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-2xl font-bold text-gray-900 mb-4">Our Solution</h3>
+                                        <ul class="text-gray-600 space-y-3">
+                                            <li class="flex items-start">
+                                                <span class="text-green-500 mr-3 mt-1">✓</span>
+                                                <span>Direct GCS integration eliminates data downloads</span>
+                                            </li>
+                                            <li class="flex items-start">
+                                                <span class="text-green-500 mr-3 mt-1">✓</span>
+                                                <span>AI generates Python/SQL code from natural language</span>
+                                            </li>
+                                            <li class="flex items-start">
+                                                <span class="text-green-500 mr-3 mt-1">✓</span>
+                                                <span>Automatic data aggregation and table generation</span>
+                                            </li>
+                                            <li class="flex items-start">
+                                                <span class="text-green-500 mr-3 mt-1">✓</span>
+                                                <span>Focus 80% of time on insights and analysis</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <p class="text-lg text-gray-600 mt-8 leading-relaxed">
+                                <strong>Analytics AI doesn't just manage your data—it transforms how you work with it.</strong> 
+                                By automating the tedious parts of data analysis, we enable you to spend more time on what matters: 
+                                discovering insights, identifying patterns, and making data-driven decisions.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CTA Section -->
+            <section class="py-20 bg-gradient-to-r from-blue-600 to-purple-600">
+                <div class="max-w-4xl mx-auto px-8 text-center">
+                    <h2 class="text-4xl font-bold text-white mb-6">Ready to Fast-Track Your Analysis?</h2>
+                    <p class="text-xl text-blue-100 mb-8 leading-relaxed">
+                        Join the future of data analysis where insights come first, 
+                        and data preparation becomes effortless.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                        <button onclick="goToData()" class="bg-white text-blue-600 px-8 py-4 rounded-xl text-lg font-semibold hover:bg-gray-50 transition-colors shadow-lg">
+                            Get Started Now
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Footer -->
+            <footer class="bg-gray-900 py-16">
+                <div class="max-w-4xl mx-auto px-8 text-center">
+                    <h3 class="text-2xl font-bold text-white mb-6">Analytics AI Platform</h3>
+                    <p class="text-gray-300 mb-8 leading-relaxed">
+                        Empowering data professionals to focus on insights, not infrastructure. 
+                        Built with passion for efficient and intelligent data analysis.
+                    </p>
+                    <div class="flex flex-wrap justify-center gap-6">
+                        <a href="mailto:your-email@example.com" class="flex items-center gap-2 text-gray-300 hover:text-white transition-colors group">
+                            <svg class="w-5 h-5 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"></path>
+                                <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"></path>
+                            </svg>
+                            <span>Contact Us</span>
+                        </a>
+                        <a href="https://github.com/your-repo" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 text-gray-300 hover:text-white transition-colors group">
+                            <svg class="w-5 h-5 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 0C4.477 0 0 4.484 0 10.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0110 4.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.203 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.942.359.31.678.921.678 1.856 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0020 10.017C20 4.484 15.522 0 10 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span>GitHub</span>
+                        </a>
+                    </div>
+                </div>
+            </footer>
+        </div>
+
+        <!-- Data Tab Content -->
+        <div id="dataContent" class="tab-content min-h-screen bg-gray-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <div class="bg-white rounded-lg shadow-lg p-8">
+                    <div class="flex items-center justify-between mb-8">
+                        <div>
+                            <h2 class="text-3xl font-bold text-gray-900 mb-2">Data Management</h2>
+                            <p class="text-gray-600">Connect to Google Cloud Storage and manage your data files</p>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <span class="text-sm text-gray-500" id="userStatus">Guest User</span>
+                            <button onclick="logout()" class="text-gray-600 hover:text-blue-600 transition-colors">Logout</button>
+                        </div>
+                    </div>
+
+                    <!-- Instructions Section -->
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg mb-8">
+                        <div class="p-4">
+                            <button onclick="toggleInstructions()" class="flex items-center justify-between w-full text-left">
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-blue-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    <h3 class="text-lg font-semibold text-blue-900">What to do next?</h3>
+                                </div>
+                                <svg id="instructions-arrow" class="w-5 h-5 text-blue-600 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </button>
+                            <div id="instructions-content" class="mt-4 space-y-3 text-gray-700 hidden">
+                                <div class="flex items-start">
+                                    <span class="inline-block w-6 h-6 bg-blue-600 text-white text-sm font-bold rounded-full flex items-center justify-center mr-3 mt-0.5">1</span>
+                                    <div>
+                                        <p class="font-medium">Connect your data sources:</p>
+                                        <p class="text-sm">Use <strong>GCS Connect</strong> to connect your external Google Cloud Storage bucket, or <strong>Upload Files</strong> to add files manually.</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start">
+                                    <span class="inline-block w-6 h-6 bg-blue-600 text-white text-sm font-bold rounded-full flex items-center justify-center mr-3 mt-0.5">2</span>
+                                    <div>
+                                        <p class="font-medium">Select your data:</p>
+                                        <p class="text-sm">Use the <strong>include checkboxes</strong> to choose which files to include in analysis, or use <strong>Select All</strong> to use all available data.</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start">
+                                    <span class="inline-block w-6 h-6 bg-blue-600 text-white text-sm font-bold rounded-full flex items-center justify-center mr-3 mt-0.5">3</span>
+                                    <div>
+                                        <p class="font-medium">Start your analysis:</p>
+                                        <p class="text-sm">Go to the <strong>Analysis Tab</strong> to begin analyzing your selected data with AI-powered insights.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- GCS Connection Section -->
+                    <div class="bg-white border border-gray-200 rounded-lg shadow-lg mb-8">
+                        <div class="p-4">
+                            <div class="flex items-center justify-between mb-4">
+                                <button onclick="toggleConnectionSection()" class="flex items-center text-left">
+                                    <h3 class="text-xl font-bold text-gray-900">Connect to Data Source</h3>
+                                    <svg id="connection-arrow" class="w-5 h-5 text-blue-600 transform transition-transform duration-200 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </button>
+                                <div class="flex items-center space-x-3">
+                                    <button onclick="loadFiles()" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors text-sm">
+                                        Load Files
+                                    </button>
+                                    <button onclick="clearGCSConnection()" class="bg-gray-500 text-white px-3 py-2 rounded-lg hover:bg-gray-600 transition-colors text-sm">
+                                        Clear
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- Connection Options -->
+                            <div id="connection-content" class="mt-6">
+                                <div class="grid md:grid-cols-2 gap-4">
+                                    <!-- Option 1: Connect to Bucket -->
+                                    <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                                        <div class="flex items-center mb-3">
+                                            <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+                                                <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"></path>
+                                                </svg>
+                                            </div>
+                                            <div>
+                                                <h4 class="text-base font-semibold text-gray-900">Connect to GCS Bucket</h4>
+                                                <p class="text-xs text-gray-600">Access existing data from Google Cloud Storage</p>
+                                            </div>
+                                        </div>
+                                        <div class="space-y-3">
+                                            <div>
+                                                <label class="block text-sm font-medium text-gray-700 mb-1">Bucket URL</label>
+                                                <input type="text" id="bucketUrl" value="gs://sample-bucket-v2901" placeholder="gs://your-bucket-name" 
+                                                       class="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent text-sm">
+                                            </div>
+                                            <button onclick="connectExistingBucket()" class="w-full bg-blue-600 text-white px-3 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium text-sm">
+                                                Connect to Bucket
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <!-- Option 2: Upload Files -->
+                                    <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                                        <div class="flex items-center mb-3">
+                                            <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mr-3">
+                                                <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                                                </svg>
+                                            </div>
+                                            <div>
+                                                <h4 class="text-base font-semibold text-gray-900">Upload Your Files</h4>
+                                                <p class="text-xs text-gray-600">Access data from local storage</p>
+                                            </div>
+                                        </div>
+                                        <div class="space-y-3">
+                                            <div>
+                                                <label class="block text-sm font-medium text-gray-700 mb-1">Supported formats</label>
+                                                <div class="text-center py-1.5 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
+                                                    <div class="flex flex-wrap justify-center gap-1">
+                                                        <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full font-medium">CSV</span>
+                                                        <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full font-medium">JSON</span>
+                                                        <span class="px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded-full font-medium">Excel</span>
+                                                        <span class="px-2 py-1 bg-orange-100 text-orange-800 text-xs rounded-full font-medium">Parquet</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <button onclick="uploadFiles()" class="w-full bg-green-600 text-white px-3 py-2 rounded-lg hover:bg-green-700 transition-colors font-medium text-sm">
+                                                Choose Files to Upload
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Data Files Display -->
+                    <div id="dataFilesSection" class="hidden">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="text-xl font-bold text-gray-900">Data Files</h3>
+                            <div class="flex items-center space-x-4">
+                                <span id="bucketInfo" class="text-sm text-gray-600"></span>
+                                <button onclick="refreshFiles()" class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors text-sm">
+                                    Refresh
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Files Grid -->
+                        <div id="dataFilesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                            <!-- Data cards will be dynamically inserted here -->
+                            </div>
+                        </div>
+
+                    <!-- Loading State -->
+                    <div id="loadingState" class="text-center py-12 hidden">
+                        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+                        <p class="text-gray-600">Loading data files...</p>
+                    </div>
+
+                    <!-- Empty State -->
+                    <div id="emptyState" class="text-center py-12 hidden">
+                        <div class="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                            </div>
+                        <h3 class="text-lg font-medium text-gray-900 mb-2">No data files found</h3>
+                        <p class="text-gray-600 mb-4">Connect to a public GCS bucket or upload your own files to get started</p>
+                    </div>
+                            </div>
+                        </div>
+                    </div>
+
+        <!-- File Preview Modal -->
+        <div id="filePreviewModal" class="fixed inset-0 bg-black bg-opacity-50 modal-backdrop z-50 hidden">
+            <div class="min-h-screen flex items-center justify-center p-4">
+                <div class="bg-white rounded-2xl shadow-2xl w-full max-w-7xl max-h-[95vh] modal-enter flex flex-col">
+                    <!-- Modal Header -->
+                    <div class="flex items-center justify-between p-6 border-b border-gray-200">
+                        <div>
+                            <h2 class="text-2xl font-bold text-gray-900" id="previewFileName">File Preview</h2>
+                            <p class="text-sm text-gray-600" id="previewFileInfo"></p>
+                        </div>
+                        <button onclick="closePreviewModal()" class="text-gray-400 hover:text-gray-600 transition-colors">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                            </button>
+                        </div>
+
+                    <!-- Modal Content -->
+                    <div class="p-6 flex-1 overflow-hidden">
+                        <div id="previewContent" class="h-full overflow-auto custom-scrollbar">
+                            <!-- Preview content will be inserted here -->
+                    </div>
+                </div>
+
+                    <!-- Modal Footer -->
+                    <div class="flex items-center justify-between p-6 border-t border-gray-200">
+                        <div class="text-sm text-gray-500" id="previewFooter">
+                            <!-- Footer info will be inserted here -->
+                        </div>
+                        <button onclick="closePreviewModal()" class="bg-gray-600 text-white px-6 py-2 rounded-lg hover:bg-gray-700 transition-colors">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Authentication Modal -->
+    <div id="authModal" class="fixed inset-0 bg-black bg-opacity-50 modal-backdrop z-50 hidden">
+        <div class="min-h-screen flex items-center justify-center p-4">
+            <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md modal-enter">
+                <!-- Modal Header -->
+                <div class="flex items-center justify-between p-6 border-b border-gray-200">
+                    <h2 class="text-2xl font-bold text-gray-900">Welcome to Analytics AI</h2>
+                    <button onclick="closeAuthModal()" class="text-gray-400 hover:text-gray-600 transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Modal Content -->
+                <div class="p-6">
+                    <!-- Tab Navigation -->
+                    <div class="flex mb-6">
+                        <button id="modal-login-tab" class="flex-1 py-2 px-4 text-center font-medium rounded-l-lg bg-blue-600 text-white transition-colors">
+                            Login
+                        </button>
+                        <button id="modal-register-tab" class="flex-1 py-2 px-4 text-center font-medium rounded-r-lg bg-gray-200 text-gray-700 hover:bg-gray-300 transition-colors">
+                            Register
+                        </button>
+                    </div>
+
+                    <!-- Login Form -->
+                    <form id="modal-login-form" class="space-y-4">
+                        <div>
+                            <input id="modal-login-username" type="text" placeholder="Username" 
+                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-colors">
+                        </div>
+                        <div>
+                            <input id="modal-login-password" type="password" placeholder="Password" 
+                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-colors">
+                        </div>
+                        <button type="submit" 
+                                class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2">
+                            Sign In
+                        </button>
+                    </form>
+
+                    <!-- Register Form -->
+                    <form id="modal-register-form" class="space-y-4 hidden">
+                        <div>
+                            <input id="modal-register-name" type="text" placeholder="Full Name" 
+                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-colors">
+                        </div>
+                        <div>
+                            <input id="modal-register-username" type="text" placeholder="Username" 
+                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-colors">
+                        </div>
+                        <div>
+                            <input id="modal-register-password" type="password" placeholder="Password" 
+                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-colors">
+                        </div>
+                        <button type="submit" 
+                                class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2">
+                            Create Account
+                        </button>
+                    </form>
+
+                    <!-- Guest Login -->
+                    <div class="mt-6 pt-6 border-t border-gray-200">
+                        <button onclick="guestLogin()" 
+                                class="w-full bg-gray-600 hover:bg-gray-700 text-white font-medium py-3 px-4 rounded-lg transition-colors">
+                            Continue as Guest
+                        </button>
+                    </div>
+
+                    <!-- Messages -->
+                    <div id="modal-message" class="mt-4 p-3 rounded-lg hidden"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analysis Tab Content -->
+        <div id="analysisContent" class="tab-content min-h-screen bg-gray-50 hidden">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <div class="bg-white rounded-lg shadow-lg p-8">
+                    <div class="flex items-center justify-between mb-8">
+                        <div>
+                            <h2 class="text-3xl font-bold text-gray-900 mb-2">AI Analysis</h2>
+                            <p class="text-gray-600">Analyze your data with AI-powered insights</p>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <span class="text-sm text-gray-500" id="userStatus">Guest User</span>
+                            <button onclick="logout()" class="text-gray-600 hover:text-blue-600 transition-colors">Logout</button>
+                        </div>
+                    </div>
+
+                    <!-- Analysis Content Placeholder -->
+                    <div class="text-center py-16">
+                        <div class="mb-8">
+                            <svg class="w-24 h-24 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                            </svg>
+                            <h3 class="text-2xl font-semibold text-gray-900 mb-4">Analysis Tools Coming Soon</h3>
+                            <p class="text-gray-600 max-w-2xl mx-auto">
+                                This is where you'll be able to run AI-powered analysis on your selected data. 
+                                Features will include statistical analysis, data visualization, and intelligent insights.
+                            </p>
+                        </div>
+                        
+                        <div class="bg-blue-50 border border-blue-200 rounded-lg p-6 max-w-2xl mx-auto">
+                            <h4 class="text-lg font-semibold text-blue-900 mb-3">What's Coming Next?</h4>
+                            <ul class="text-left text-gray-700 space-y-2">
+                                <li class="flex items-center">
+                                    <svg class="w-5 h-5 text-blue-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    Statistical analysis and data profiling
+                                </li>
+                                <li class="flex items-center">
+                                    <svg class="w-5 h-5 text-blue-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    Interactive data visualizations
+                                </li>
+                                <li class="flex items-center">
+                                    <svg class="w-5 h-5 text-blue-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    AI-generated insights and recommendations
+                                </li>
+                                <li class="flex items-center">
+                                    <svg class="w-5 h-5 text-blue-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    Export results and reports
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global state
+        let currentUser = null;
+        let authToken = localStorage.getItem('authToken');
+        let isGuestUser = false;
+
+        // DOM elements
+        const mainContainer = document.getElementById('mainContainer');
+        const authModal = document.getElementById('authModal');
+        const modalLoginTab = document.getElementById('modal-login-tab');
+        const modalRegisterTab = document.getElementById('modal-register-tab');
+        const modalLoginForm = document.getElementById('modal-login-form');
+        const modalRegisterForm = document.getElementById('modal-register-form');
+        const modalMessage = document.getElementById('modal-message');
+        const getStartedBtn = document.getElementById('getStartedBtn');
+        const logoutBtn = document.getElementById('logoutBtn');
+
+        // Tab management
+        function switchTab(tabName) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+                content.classList.add('hidden');
+            });
+            
+            // Remove active class from all tab buttons
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('active');
+            });
+            
+            // Show selected tab content
+            const selectedContent = document.getElementById(tabName + 'Content');
+            selectedContent.classList.add('active');
+            selectedContent.classList.remove('hidden');
+            
+            // Add active class to selected tab button
+            document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+            
+            // Scroll to top of the page when switching tabs
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+            
+            // Enable/disable top right navigation buttons based on current tab
+            const topRightButtons = document.querySelectorAll('nav .flex.items-center.space-x-4 button');
+            topRightButtons.forEach(button => {
+                if (tabName === 'home') {
+                    button.disabled = false;
+                    button.classList.remove('opacity-50', 'cursor-not-allowed');
+                    button.classList.add('hover:text-blue-600');
+                } else {
+                    button.disabled = true;
+                    button.classList.add('opacity-50', 'cursor-not-allowed');
+                    button.classList.remove('hover:text-blue-600');
+                }
+            });
+        }
+
+        // Toggle instructions section
+        function toggleInstructions() {
+            const content = document.getElementById('instructions-content');
+            const arrow = document.getElementById('instructions-arrow');
+            
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                arrow.style.transform = 'rotate(180deg)';
+            } else {
+                content.classList.add('hidden');
+                arrow.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        // Toggle connection section
+        function toggleConnectionSection() {
+            const content = document.getElementById('connection-content');
+            const arrow = document.getElementById('connection-arrow');
+            
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                arrow.style.transform = 'rotate(180deg)';
+            } else {
+                content.classList.add('hidden');
+                arrow.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        // Modal tab switching
+        function showModalTab(tab) {
+            if (tab === 'login') {
+                modalLoginTab.className = 'flex-1 py-2 px-4 text-center font-medium rounded-l-lg bg-blue-600 text-white transition-colors';
+                modalRegisterTab.className = 'flex-1 py-2 px-4 text-center font-medium rounded-r-lg bg-gray-200 text-gray-700 hover:bg-gray-300 transition-colors';
+                modalLoginForm.classList.remove('hidden');
+                modalRegisterForm.classList.add('hidden');
+            } else {
+                modalRegisterTab.className = 'flex-1 py-2 px-4 text-center font-medium rounded-r-lg bg-blue-600 text-white transition-colors';
+                modalLoginTab.className = 'flex-1 py-2 px-4 text-center font-medium rounded-l-lg bg-gray-200 text-gray-700 hover:bg-gray-300 transition-colors';
+                modalRegisterForm.classList.remove('hidden');
+                modalLoginForm.classList.add('hidden');
+            }
+        }
+
+        // Modal functions
+        function showAuthModal() {
+            authModal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeAuthModal() {
+            authModal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Navigation functions
+        function scrollToSection(sectionId) {
+            // First switch to Home tab if not already there
+            switchTab('home');
+            
+            // Then scroll to the section after a short delay to ensure tab switch completes
+            setTimeout(() => {
+                const element = document.getElementById(sectionId);
+                if (element) {
+                    element.scrollIntoView({ behavior: 'smooth' });
+                }
+            }, 100);
+        }
+
+        function goToData() {
+            if (authToken || isGuestUser) {
+                // Already authenticated, switch to data tab
+                switchTab('data');
+            } else {
+                // Not authenticated, show auth modal
+                showAuthModal();
+            }
+        }
+
+        // Show message in modal (replaces previous message)
+        function showModalMessage(text, type = 'info') {
+            // Hide any existing messages first
+            const existingMessages = document.querySelectorAll('#modal-message');
+            existingMessages.forEach(msg => msg.classList.add('hidden'));
+            
+            // Update the modal message
+            modalMessage.textContent = text;
+            modalMessage.className = `mt-4 p-3 rounded-lg ${
+                type === 'error' ? 'bg-red-100 text-red-700 border border-red-300' :
+                type === 'success' ? 'bg-green-100 text-green-700 border border-green-300' :
+                type === 'warning' ? 'bg-yellow-100 text-yellow-700 border border-yellow-300' :
+                'bg-blue-100 text-blue-700 border border-blue-300'
+            }`;
+            modalMessage.classList.remove('hidden');
+            
+            // Clear any existing timeout
+            if (window.modalMessageTimeout) {
+                clearTimeout(window.modalMessageTimeout);
+            }
+            
+            // Auto-hide after 4 seconds
+            window.modalMessageTimeout = setTimeout(() => {
+                modalMessage.classList.add('hidden');
+            }, 4000);
+        }
+
+        // API calls
+        async function apiCall(url, options = {}) {
+            try {
+                const response = await fetch(url, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        ...(authToken && { 'Authorization': `Bearer ${authToken}` }),
+                        ...options.headers
+                    },
+                    ...options
+                });
+
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(data.detail || 'Request failed');
+                }
+                
+                return data;
+            } catch (error) {
+                throw error;
+            }
+        }
+
+        // Authentication functions
+        async function login(username, password) {
+            try {
+                const response = await apiCall('http://localhost:8000/api/auth/login', {
+                    method: 'POST',
+                    body: JSON.stringify({ username, password })
+                });
+
+                authToken = response.token;
+                localStorage.setItem('authToken', authToken);
+                isGuestUser = false;
+
+                // Get user info
+                const userInfo = await apiCall('http://localhost:8000/api/auth/verify');
+                currentUser = userInfo;
+
+                closeAuthModal();
+                switchTab('data');
+                updateUserInterface();
+                showModalMessage('Login successful!', 'success');
+            } catch (error) {
+                showModalMessage(error.message, 'error');
+            }
+        }
+
+        async function register(name, username, password) {
+            try {
+                const response = await apiCall('http://localhost:8000/api/auth/register', {
+                    method: 'POST',
+                    body: JSON.stringify({ name, username, password })
+                });
+
+                authToken = response.token;
+                localStorage.setItem('authToken', authToken);
+                isGuestUser = false;
+
+                // Get user info
+                const userInfo = await apiCall('http://localhost:8000/api/auth/verify');
+                currentUser = userInfo;
+
+                closeAuthModal();
+                switchTab('data');
+                updateUserInterface();
+                showModalMessage('Registration successful!', 'success');
+            } catch (error) {
+                showModalMessage(error.message, 'error');
+            }
+        }
+
+        function guestLogin() {
+            isGuestUser = true;
+            currentUser = { name: 'Guest User', username: 'guest', user_id: 'guest' };
+            closeAuthModal();
+            switchTab('data');
+            updateUserInterface();
+            showModalMessage('Welcome, Guest!', 'success');
+        }
+
+        function logout() {
+            authToken = null;
+            currentUser = null;
+            isGuestUser = false;
+            localStorage.removeItem('authToken');
+            updateUserInterface();
+            switchTab('home');
+        }
+
+        // Update UI based on auth status
+        function updateUserInterface() {
+            const dataTab = document.querySelector('[data-tab="data"]');
+            const analysisTab = document.querySelector('[data-tab="analysis"]');
+            const userStatus = document.getElementById('userStatus');
+            
+            if (authToken || isGuestUser) {
+                // User is authenticated
+                getStartedBtn.classList.add('hidden');
+                logoutBtn.classList.remove('hidden');
+                dataTab.classList.remove('hidden');
+                analysisTab.classList.remove('hidden');
+                
+                if (userStatus) {
+                    userStatus.textContent = isGuestUser ? 'Guest User' : `Welcome, ${currentUser?.name || 'User'}`;
+                }
+            } else {
+                // User is not authenticated
+                getStartedBtn.classList.remove('hidden');
+                logoutBtn.classList.add('hidden');
+                dataTab.classList.add('hidden');
+                analysisTab.classList.add('hidden');
+                
+                if (userStatus) {
+                    userStatus.textContent = 'Guest User';
+                }
+            }
+        }
+
+        // Data management functions
+        let currentBucket = null;
+        let currentFiles = [];
+
+
+        async function connectExistingBucket() {
+            const bucketUrl = document.getElementById('bucketUrl').value.trim();
+            if (!bucketUrl) {
+                showModalMessage('Please enter a bucket URL', 'error');
+                return;
+            }
+            
+            if (!bucketUrl.startsWith('gs://')) {
+                showModalMessage('Bucket URL must start with gs://', 'error');
+                return;
+            }
+
+            const bucketName = bucketUrl.replace('gs://', '');
+            currentBucket = { name: bucketName, url: bucketUrl, isDefault: false };
+            
+            // Save the connected GCS bucket for future reference (use sessionStorage so it clears on page refresh)
+            if (bucketName !== 'ai-analysis-default-bucket') {
+                sessionStorage.setItem('connectedGCSBucket', bucketName);
+            }
+            
+            showLoadingState();
+            try {
+                // Always get combined files (public bucket + default bucket) for portfolio demo
+                const url = `http://localhost:8000/api/data/combined-files?public_bucket=${bucketName}`;
+                const files = await apiCall(url);
+                currentFiles = files;
+                
+                // Update bucket info to show we're connected to both
+                currentBucket = { 
+                    name: 'Combined Data Sources', 
+                    url: `gs://ai-analysis-default-bucket + gs://${bucketName}`, 
+                    isDefault: true 
+                };
+                
+                displayFiles();
+                showModalMessage(`Connected to ${bucketName}! Showing files from both your uploads and the GCS bucket.`, 'success');
+                
+            } catch (error) {
+                showModalMessage(`Failed to connect to bucket: ${error.message}`, 'error');
+                showEmptyState();
+            }
+        }
+
+        async function uploadFiles() {
+            // Don't clear GCS connection - we want to maintain it for combining files
+            // Only clear if user explicitly wants to start fresh (which should be a separate action)
+            
+            // Connect to default bucket first
+            currentBucket = { 
+                name: 'ai-analysis-default-bucket', 
+                url: 'gs://ai-analysis-default-bucket', 
+                isDefault: true 
+            };
+            
+            // For upload, just trigger the file dialog - don't load existing files yet
+            // Files will be loaded after successful upload
+            uploadToDefault();
+        }
+
+        function displayFiles() {
+            const dataFilesSection = document.getElementById('dataFilesSection');
+            const dataFilesGrid = document.getElementById('dataFilesGrid');
+            const bucketInfo = document.getElementById('bucketInfo');
+
+
+            // Don't show files unless we have a valid bucket connection
+            if (!currentBucket) {
+                showEmptyState();
+                return;
+            }
+
+            if (currentFiles.length === 0) {
+                showEmptyState();
+                return;
+            }
+
+            // Show bucket info
+            bucketInfo.textContent = `Connected to: ${currentBucket.name}`;
+
+            // Separate files by source
+            const uploadedFiles = currentFiles.filter(f => f.source === 'uploaded');
+            const gcsFiles = currentFiles.filter(f => f.source === 'public');
+
+            // Generate file cards with source indicators, checkboxes, and delete buttons
+            dataFilesGrid.innerHTML = currentFiles.map((file, index) => `
+                <div class="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow relative">
+                    <!-- Top row with checkbox and delete button -->
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center">
+                            <input type="checkbox" 
+                                   id="file-${index}" 
+                                   class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                                   checked
+                                   onchange="toggleFileSelection(${index})">
+                            <label for="file-${index}" class="ml-2 text-sm text-gray-700">Include in analysis</label>
+                        </div>
+                        ${file.source === 'uploaded' ? `
+                            <button onclick="event.stopPropagation(); deleteFile('${file.name}')" 
+                                    class="p-1 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-full transition-colors"
+                                    title="Delete file">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                            </button>
+                        ` : ''}
+                    </div>
+                    
+                    <!-- File content (clickable for preview) -->
+                    <div class="cursor-pointer" onclick="previewFile('${file.name}', '${file.source}')">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 ${file.source === 'uploaded' ? 'bg-green-100' : 'bg-blue-100'} rounded-lg flex items-center justify-center mr-4">
+                                <svg class="w-6 h-6 ${file.source === 'uploaded' ? 'text-green-600' : 'text-blue-600'}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                            </div>
+                            <div class="flex-1">
+                                <h4 class="font-semibold text-gray-900 truncate">${file.name}</h4>
+                                <p class="text-sm text-gray-600">${formatFileSize(file.size)} • ${file.updated}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <div class="text-xs text-gray-500 bg-gray-50 rounded px-2 py-1">
+                                ${file.contentType || 'Unknown type'}
+                            </div>
+                            <div class="text-xs ${file.source === 'uploaded' ? 'text-green-600 bg-green-50' : 'text-blue-600 bg-blue-50'} rounded px-2 py-1">
+                                ${file.source === 'uploaded' ? 'Uploaded' : 'GCS'}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            // Initialize selection for all files (default to checked)
+            selectedFiles.clear();
+            currentFiles.forEach((_, index) => {
+                selectedFiles.add(index);
+            });
+            updateSelectionSummary();
+
+            // Remove any existing summary sections first
+            const existingSummaries = dataFilesSection.querySelectorAll('.data-sources-summary');
+            existingSummaries.forEach(summary => summary.remove());
+            
+            // Add single summary for all files
+            if (uploadedFiles.length > 0 || gcsFiles.length > 0) {
+                const summary = document.createElement('div');
+                summary.className = 'mb-4 p-3 bg-gray-50 border border-gray-200 rounded-lg data-sources-summary';
+                
+                let summaryText = '';
+                if (uploadedFiles.length > 0 && gcsFiles.length > 0) {
+                    summaryText = `${uploadedFiles.length} uploaded files • ${gcsFiles.length} GCS files`;
+                } else if (uploadedFiles.length > 0) {
+                    summaryText = `${uploadedFiles.length} uploaded files`;
+                } else if (gcsFiles.length > 0) {
+                    summaryText = `${gcsFiles.length} GCS files`;
+                }
+                
+                summary.innerHTML = `
+                    <div class="flex items-center justify-between text-sm">
+                        <span class="text-gray-800">Data Sources:</span>
+                        <span class="text-gray-600">${summaryText}</span>
+                    </div>
+                `;
+                dataFilesSection.insertBefore(summary, dataFilesGrid);
+            }
+
+            dataFilesSection.classList.remove('hidden');
+            hideLoadingState();
+            hideEmptyState();
+        }
+
+        async function previewFile(fileName, fileSource) {
+            const modal = document.getElementById('filePreviewModal');
+            const fileNameEl = document.getElementById('previewFileName');
+            const fileInfoEl = document.getElementById('previewFileInfo');
+            const previewContent = document.getElementById('previewContent');
+
+            fileNameEl.textContent = fileName;
+            
+            // Determine which bucket to preview from
+            let bucketName;
+            if (fileSource === 'uploaded') {
+                bucketName = 'ai-analysis-default-bucket';
+                fileInfoEl.textContent = `Previewing uploaded file from your personal space`;
+            } else {
+                // For public files, use the actual GCS bucket name, not the combined name
+                const gcsBucket = sessionStorage.getItem('connectedGCSBucket');
+                bucketName = gcsBucket || 'sample-bucket-v2901'; // fallback to default sample bucket
+                fileInfoEl.textContent = `Previewing public file from ${bucketName}`;
+            }
+
+            modal.classList.remove('hidden');
+            previewContent.innerHTML = `
+                <div class="text-center py-8">
+                    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
+                    <p class="text-gray-600">Loading preview...</p>
+                </div>
+            `;
+            
+            try {
+                const preview = await apiCall(`http://localhost:8000/api/data/bucket/${bucketName}/file/${fileName}/preview`);
+                
+                if (preview.type === 'csv' || preview.type === 'json') {
+                    // Use structured data from backend
+                    const columns = preview.columns || [];
+                    const rows = preview.rows || [];
+                    
+                    if (columns.length === 0 || rows.length === 0) {
+                        previewContent.innerHTML = '<div class="text-center py-8 text-gray-600">No data available</div>';
+                        return;
+                    }
+                    
+                    let tableHTML = `
+                        <div class="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm">
+                            <div class="bg-gray-50 px-4 py-3 border-b border-gray-200">
+                                <h4 class="text-lg font-semibold text-gray-900">Data Preview</h4>
+                            </div>
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full divide-y divide-gray-200">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            ${columns.map(col => `
+                                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider border-r border-gray-200">
+                                                    <div class="flex flex-col">
+                                                        <span class="font-semibold">${col.name}</span>
+                                                        <span class="text-xs text-gray-500 font-normal mt-1">
+                                                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
+                                                                col.type === 'int' ? 'bg-blue-100 text-blue-800' :
+                                                                col.type === 'float' ? 'bg-green-100 text-green-800' :
+                                                                col.type === 'date' ? 'bg-purple-100 text-purple-800' :
+                                                                col.type === 'bool' ? 'bg-orange-100 text-orange-800' :
+                                                                'bg-gray-100 text-gray-800'
+                                                            }">
+                                                                ${col.type}
+                                                            </span>
+                                                        </span>
+                                                    </div>
+                                                </th>
+                                            `).join('')}
+                                        </tr>
+                                    </thead>
+                                    <tbody class="bg-white divide-y divide-gray-200">
+                                        ${rows.map((row, index) => `
+                                            <tr class="${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'} hover:bg-blue-50 transition-colors">
+                                                ${columns.map(col => {
+                                                    const cellValue = row[col.name];
+                                                    let displayValue = cellValue !== null && cellValue !== undefined ? String(cellValue) : '-';
+                                                    let cellClass = 'px-4 py-3 text-sm border-r border-gray-100';
+                                                    
+                                                    // Format cell value based on data type
+                                                    if (col.type === 'int' || col.type === 'float') {
+                                                        cellClass += ' text-right font-mono';
+                                                        if (cellValue !== null && cellValue !== undefined && !isNaN(cellValue)) {
+                                                            displayValue = col.type === 'int' ? 
+                                                                parseInt(cellValue).toLocaleString() : 
+                                                                parseFloat(cellValue).toLocaleString();
+                                                        }
+                                                    } else if (col.type === 'date') {
+                                                        cellClass += ' font-mono';
+                                                    } else if (col.type === 'bool') {
+                                                        cellClass += ' text-center';
+                                                        if (cellValue === true || cellValue === 'true') {
+                                                            displayValue = '<span class="text-green-600">✓</span>';
+                                                        } else if (cellValue === false || cellValue === 'false') {
+                                                            displayValue = '<span class="text-red-600">✗</span>';
+                                                        }
+                                                    } else {
+                                                        cellClass += ' text-left';
+                                                        // Truncate long strings
+                                                        if (displayValue.length > 50) {
+                                                            displayValue = displayValue.substring(0, 47) + '...';
+                                                        }
+                                                    }
+                                                    
+                                                    return `
+                                                        <td class="${cellClass} whitespace-nowrap">
+                                                            ${displayValue}
+                                                        </td>
+                                                    `;
+                                                }).join('')}
+                                            </tr>
+                                        `).join('')}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    `;
+                
+                    previewContent.innerHTML = tableHTML;
+                    
+                    // Update footer with file info
+                    const uniqueDataTypes = [...new Set(columns.map(col => col.type))];
+                    document.getElementById('previewFooter').innerHTML = `
+                        <span><strong>File Type:</strong> ${preview.type.toUpperCase()}</span> • 
+                        <span><strong>Source:</strong> ${fileSource === 'uploaded' ? 'Your uploaded files' : 'GCS bucket'}</span> • 
+                        <span><strong>Columns:</strong> ${columns.length}</span> • 
+                        <span><strong>Data Types:</strong> ${uniqueDataTypes.join(', ')}</span> • 
+                        <span><strong>Showing:</strong> ${rows.length} rows</span>
+                        ${preview.totalRows ? ` • <span><strong>Total:</strong> ${preview.totalRows} rows</span>` : ''}
+                    `;
+                } else {
+                    previewContent.innerHTML = `
+                        <div class="text-center py-12">
+                            <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                            </div>
+                            <p class="text-gray-600">Preview not available for this file type</p>
+                        </div>
+                    `;
+                    
+                    document.getElementById('previewFooter').innerHTML = `
+                        <span><strong>File Type:</strong> ${preview.type || 'Unknown'}</span>
+                    `;
+                }
+            } catch (error) {
+                previewContent.innerHTML = `
+                    <div class="text-center py-12">
+                        <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <p class="text-red-600">Failed to load preview: ${error.message}</p>
+                    </div>
+                `;
+                
+                document.getElementById('previewFooter').innerHTML = '';
+            }
+        }
+
+        function closePreviewModal() {
+            document.getElementById('filePreviewModal').classList.add('hidden');
+        }
+
+        async function loadFiles() {
+            showLoadingState();
+            
+            try {
+                // Always try to load combined files (default + sample bucket) for portfolio demo
+                const sampleBucket = 'sample-bucket-v2901';
+                
+                // Set up connection to default bucket
+                currentBucket = { 
+                    name: 'ai-analysis-default-bucket', 
+                    url: 'gs://ai-analysis-default-bucket', 
+                    isDefault: true 
+                };
+                
+                // Save sample bucket connection for this session
+                sessionStorage.setItem('connectedGCSBucket', sampleBucket);
+                
+                // Try to load combined files (uploaded + sample bucket)
+                try {
+                    const combinedFiles = await apiCall(`http://localhost:8000/api/data/combined-files?public_bucket=${sampleBucket}`);
+                    currentFiles = combinedFiles;
+                    
+                    if (combinedFiles.length > 0) {
+                        // Update current bucket to show we're connected to both
+                        currentBucket = { 
+                            name: 'Combined Data Sources', 
+                            url: 'gs://ai-analysis-default-bucket + gs://sample-bucket-v2901', 
+                            isDefault: true 
+                        };
+                        displayFiles();
+                        showModalMessage('Loaded files from both your uploads and sample dataset!', 'success');
+                        return;
+                    }
+                } catch (error) {
+                    console.log('Could not load combined files, trying default bucket only');
+                }
+                
+                // Fallback: Load only default bucket files
+                const defaultFiles = await apiCall('http://localhost:8000/api/data/default-bucket/files');
+                
+                if (defaultFiles.length > 0) {
+                    currentFiles = defaultFiles.map(file => ({
+                        ...file,
+                        source: 'uploaded',
+                        source_info: 'Your uploaded files'
+                    }));
+                    displayFiles();
+                    showModalMessage('Loaded your uploaded files. Connect to a GCS bucket to see more data!', 'info');
+                } else {
+                    // No files in default bucket, try sample bucket only
+                    try {
+                        const gcsFiles = await apiCall(`http://localhost:8000/api/data/bucket/${sampleBucket}/files`);
+                        if (gcsFiles.length > 0) {
+                            currentBucket = { 
+                                name: sampleBucket, 
+                                url: `gs://${sampleBucket}`, 
+                                isDefault: false 
+                            };
+                            currentFiles = gcsFiles.map(file => ({
+                                ...file,
+                                source: 'public',
+                                source_info: `Sample dataset: ${sampleBucket}`
+                            }));
+                            sessionStorage.setItem('connectedGCSBucket', sampleBucket);
+                            displayFiles();
+                            showModalMessage('Loaded sample dataset! Upload your own files to combine them.', 'info');
+                            return;
+                        }
+                    } catch (error) {
+                        console.log('Could not load sample bucket');
+                    }
+                    
+                    // No files found anywhere
+                    showModalMessage('No files found. Upload some files or connect to a GCS bucket!', 'info');
+                    showEmptyState();
+                }
+            } catch (error) {
+                showModalMessage(`Failed to load files: ${error.message}`, 'error');
+                showEmptyState();
+            }
+        }
+
+        async function refreshFiles() {
+            if (!currentBucket) return;
+            
+            // Hide any existing status messages
+            modalMessage.classList.add('hidden');
+            
+            showLoadingState();
+            try {
+                // Get combined files (GCS bucket + default bucket)
+                // Check if we have a previously connected GCS bucket
+                const previouslyConnectedBucket = sessionStorage.getItem('connectedGCSBucket');
+                const url = previouslyConnectedBucket && previouslyConnectedBucket !== 'ai-analysis-default-bucket'
+                    ? `http://localhost:8000/api/data/combined-files?public_bucket=${previouslyConnectedBucket}`
+                    : currentBucket.name === 'ai-analysis-default-bucket' 
+                        ? 'http://localhost:8000/api/data/combined-files'
+                        : `http://localhost:8000/api/data/combined-files?public_bucket=${currentBucket.name}`;
+                
+                const files = await apiCall(url);
+                currentFiles = files;
+                displayFiles();
+            } catch (error) {
+                showModalMessage(`Failed to refresh files: ${error.message}`, 'error');
+                showEmptyState();
+            }
+        }
+
+        // Function to clear GCS bucket connection
+        function clearGCSConnection() {
+            sessionStorage.removeItem('connectedGCSBucket');
+            currentBucket = null;
+            currentFiles = [];
+            hideEmptyState();
+            showEmptyState();
+            console.log('GCS connection cleared, sessionStorage cleaned');
+        }
+        
+        // Function to completely reset the application state
+        function resetApplicationState() {
+            // Clear all storage
+            localStorage.clear();
+            sessionStorage.clear();
+            // Reset application state
+            currentBucket = null;
+            currentFiles = [];
+            // Clear UI
+            const dataFilesSection = document.getElementById('dataFilesSection');
+            const dataFilesGrid = document.getElementById('dataFilesGrid');
+            if (dataFilesGrid) {
+                dataFilesGrid.innerHTML = '';
+            }
+            if (dataFilesSection) {
+                dataFilesSection.classList.add('hidden');
+            }
+            showEmptyState();
+            console.log('Application state completely reset');
+        }
+        
+        // Debug function to check storage state
+        function debugLocalStorage() {
+            const gcsBucketLocal = localStorage.getItem('connectedGCSBucket');
+            const gcsBucketSession = sessionStorage.getItem('connectedGCSBucket');
+            console.log('Current localStorage connectedGCSBucket:', gcsBucketLocal);
+            console.log('Current sessionStorage connectedGCSBucket:', gcsBucketSession);
+            console.log('All localStorage keys:', Object.keys(localStorage));
+            console.log('All sessionStorage keys:', Object.keys(sessionStorage));
+        }
+
+        // Function to initialize clean state
+        function initializeCleanState() {
+            currentBucket = null;
+            currentFiles = [];
+            // Clear any existing data from the UI
+            const dataFilesSection = document.getElementById('dataFilesSection');
+            const dataFilesGrid = document.getElementById('dataFilesGrid');
+            if (dataFilesGrid) {
+                dataFilesGrid.innerHTML = '';
+            }
+            if (dataFilesSection) {
+                dataFilesSection.classList.add('hidden');
+            }
+            showEmptyState();
+            
+        }
+
+        function uploadToDefault() {
+            // No validation needed - we know we're uploading to default bucket
+            
+            // Create file input for upload
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.multiple = true;
+            input.accept = '.csv,.json,.xlsx,.parquet';
+            input.value = ''; // Ensure no default value
+            
+            input.onchange = async (e) => {
+                const files = Array.from(e.target.files);
+                
+                if (!files || files.length === 0) {
+                    return;
+                }
+
+                // Show upload loading state
+                showUploadLoadingState(files.length);
+                
+                let successCount = 0;
+                let errorCount = 0;
+                const totalFiles = files.filter(f => f.size > 0).length;
+                
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i];
+                    
+                    // Check if file has content
+                    if (file.size === 0) {
+                        continue;
+                    }
+                    
+                    // Update progress for current file
+                    updateUploadProgress(i + 1, totalFiles, file.name);
+                    
+                    const formData = new FormData();
+                    formData.append('file', file);
+                    
+                    try {
+                        const response = await fetch(`http://localhost:8000/api/data/default-bucket/upload`, {
+                            method: 'POST',
+                            body: formData,
+                            headers: {
+                                ...(authToken && { 'Authorization': `Bearer ${authToken}` })
+                            }
+                        });
+                        
+                        if (!response.ok) {
+                            const errorData = await response.json();
+                            throw new Error(errorData.detail || 'Upload failed');
+                        }
+                        
+                        const result = await response.json();
+                        successCount++;
+                        
+                    } catch (error) {
+                        errorCount++;
+                        console.error(`Failed to upload ${file.name}:`, error);
+                        
+                        // Continue with other files instead of stopping
+                        if (errorCount === totalFiles) {
+                            hideUploadLoadingState();
+                            showModalMessage(`Failed to upload files: ${error.message}`, 'error');
+                            return;
+                        }
+                    }
+                }
+                
+                // Hide upload loading state
+                hideUploadLoadingState();
+                
+                // Show completion message
+                if (successCount > 0 && errorCount === 0) {
+                    showModalMessage(`Successfully uploaded ${successCount} file(s)! Refreshing file list...`, 'success');
+                } else if (successCount > 0 && errorCount > 0) {
+                    showModalMessage(`Uploaded ${successCount} file(s), ${errorCount} failed. Refreshing file list...`, 'warning');
+                } else {
+                    showModalMessage('No files were uploaded successfully', 'error');
+                    return;
+                }
+                
+                // Load files after successful upload - include previously connected GCS bucket if any
+                setTimeout(async () => {
+                    try {
+                        // Check if we have a previously connected GCS bucket (not default bucket)
+                        const previouslyConnectedBucket = sessionStorage.getItem('connectedGCSBucket');
+                        let files = [];
+                        
+                        if (previouslyConnectedBucket && previouslyConnectedBucket !== 'ai-analysis-default-bucket') {
+                            // Get combined files (uploaded + GCS) - this ensures both uploaded and GCS files are shown
+                            files = await apiCall(`http://localhost:8000/api/data/combined-files?public_bucket=${previouslyConnectedBucket}`);
+                        } else {
+                            // Get only uploaded files from default bucket
+                            const defaultFiles = await apiCall('http://localhost:8000/api/data/default-bucket/files');
+                            files = defaultFiles.map(file => ({
+                                ...file,
+                                source: 'uploaded',
+                                source_info: 'Your uploaded files'
+                            }));
+                        }
+                        
+                        currentFiles = files;
+                        displayFiles();
+                    } catch (error) {
+                        showModalMessage(`Failed to refresh files: ${error.message}`, 'error');
+                    }
+                }, 1000);
+            };
+            
+            input.click();
+        }
+
+        function showLoadingState() {
+            document.getElementById('loadingState').classList.remove('hidden');
+            document.getElementById('dataFilesSection').classList.add('hidden');
+            document.getElementById('emptyState').classList.add('hidden');
+        }
+
+        function hideLoadingState() {
+            document.getElementById('loadingState').classList.add('hidden');
+        }
+
+        function showEmptyState() {
+            document.getElementById('emptyState').classList.remove('hidden');
+            document.getElementById('dataFilesSection').classList.add('hidden');
+            document.getElementById('loadingState').classList.add('hidden');
+        }
+
+        function hideEmptyState() {
+            document.getElementById('emptyState').classList.add('hidden');
+        }
+
+        function showUploadLoadingState(totalFiles) {
+            // Hide existing states
+            document.getElementById('dataFilesSection').classList.add('hidden');
+            document.getElementById('emptyState').classList.add('hidden');
+            document.getElementById('loadingState').classList.add('hidden');
+            
+            // Create or show upload loading state
+            let uploadLoadingEl = document.getElementById('uploadLoadingState');
+            if (!uploadLoadingEl) {
+                uploadLoadingEl = document.createElement('div');
+                uploadLoadingEl.id = 'uploadLoadingState';
+                uploadLoadingEl.className = 'hidden';
+                
+                const dataSection = document.getElementById('dataFilesSection').parentElement;
+                dataSection.appendChild(uploadLoadingEl);
+            }
+            
+            uploadLoadingEl.innerHTML = `
+                <div class="text-center py-12">
+                    <div class="relative w-16 h-16 mx-auto mb-6">
+                        <div class="absolute inset-0 rounded-full border-4 border-blue-200"></div>
+                        <div class="absolute inset-0 rounded-full border-4 border-blue-600 border-t-transparent animate-spin"></div>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Uploading Files</h3>
+                    <p class="text-gray-600 mb-4">Preparing to upload <span id="uploadTotalFiles">${totalFiles}</span> file(s)</p>
+                    <div class="w-full max-w-md mx-auto">
+                        <div class="flex justify-between text-sm text-gray-500 mb-2">
+                            <span id="uploadProgressText">Initializing...</span>
+                            <span id="uploadProgressPercent">0%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div id="uploadProgressBar" class="bg-blue-600 h-2 rounded-full transition-all duration-300 ease-out" style="width: 0%"></div>
+                        </div>
+                        <p id="uploadCurrentFile" class="text-sm text-gray-500 mt-2 truncate"></p>
+                    </div>
+                </div>
+            `;
+            
+            uploadLoadingEl.classList.remove('hidden');
+        }
+
+        function updateUploadProgress(current, total, fileName) {
+            const progressBar = document.getElementById('uploadProgressBar');
+            const progressText = document.getElementById('uploadProgressText');
+            const progressPercent = document.getElementById('uploadProgressPercent');
+            const currentFile = document.getElementById('uploadCurrentFile');
+            
+            if (progressBar && progressText && progressPercent && currentFile) {
+                const percentage = Math.round((current / total) * 100);
+                progressBar.style.width = `${percentage}%`;
+                progressText.textContent = `Uploading file ${current} of ${total}`;
+                progressPercent.textContent = `${percentage}%`;
+                currentFile.textContent = fileName;
+            }
+        }
+
+        function hideUploadLoadingState() {
+            const uploadLoadingEl = document.getElementById('uploadLoadingState');
+            if (uploadLoadingEl) {
+                uploadLoadingEl.classList.add('hidden');
+            }
+        }
+
+        // File selection management
+        let selectedFiles = new Set();
+        
+        function toggleFileSelection(index) {
+            const checkbox = document.getElementById(`file-${index}`);
+            if (checkbox.checked) {
+                selectedFiles.add(index);
+            } else {
+                selectedFiles.delete(index);
+            }
+            
+            // Update UI to show selection count
+            updateSelectionSummary();
+        }
+
+        function updateSelectionSummary() {
+            // Add or update selection summary
+            let summaryEl = document.getElementById('selectionSummary');
+            if (!summaryEl) {
+                summaryEl = document.createElement('div');
+                summaryEl.id = 'selectionSummary';
+                summaryEl.className = 'mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg';
+                
+                const dataSection = document.getElementById('dataFilesSection');
+                dataSection.insertBefore(summaryEl, dataSection.firstChild);
+            }
+            
+            const totalFiles = currentFiles.length;
+            const selectedCount = selectedFiles.size;
+            
+            summaryEl.innerHTML = `
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <svg class="w-5 h-5 text-blue-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <span class="text-sm font-medium text-blue-900">
+                            ${selectedCount} of ${totalFiles} files selected for analysis
+                        </span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <button onclick="selectAllFiles()" class="text-xs text-blue-600 hover:text-blue-800 font-medium">
+                            Select All
+                        </button>
+                        <span class="text-blue-300">|</span>
+                        <button onclick="deselectAllFiles()" class="text-xs text-blue-600 hover:text-blue-800 font-medium">
+                            Deselect All
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function selectAllFiles() {
+            selectedFiles.clear();
+            currentFiles.forEach((_, index) => {
+                selectedFiles.add(index);
+                const checkbox = document.getElementById(`file-${index}`);
+                if (checkbox) checkbox.checked = true;
+            });
+            updateSelectionSummary();
+        }
+
+        function deselectAllFiles() {
+            selectedFiles.clear();
+            currentFiles.forEach((_, index) => {
+                const checkbox = document.getElementById(`file-${index}`);
+                if (checkbox) checkbox.checked = false;
+            });
+            updateSelectionSummary();
+        }
+
+        async function deleteFile(fileName) {
+            if (!confirm(`Are you sure you want to delete "${fileName}"? This action cannot be undone.`)) {
+                return;
+            }
+            
+            try {
+                showModalMessage('Deleting file...', 'info');
+                
+                const response = await fetch(`http://localhost:8000/api/data/bucket/ai-analysis-default-bucket/file/${fileName}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        ...(authToken && { 'Authorization': `Bearer ${authToken}` })
+                    }
+                });
+                
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.detail || 'Delete failed');
+                }
+                
+                showModalMessage(`File "${fileName}" deleted successfully!`, 'success');
+                
+                // Refresh the file list
+                setTimeout(async () => {
+                    try {
+                        const previouslyConnectedBucket = sessionStorage.getItem('connectedGCSBucket');
+                        let files = [];
+                        
+                        if (previouslyConnectedBucket && previouslyConnectedBucket !== 'ai-analysis-default-bucket') {
+                            files = await apiCall(`http://localhost:8000/api/data/combined-files?public_bucket=${previouslyConnectedBucket}`);
+                        } else {
+                            const defaultFiles = await apiCall('http://localhost:8000/api/data/default-bucket/files');
+                            files = defaultFiles.map(file => ({
+                                ...file,
+                                source: 'uploaded',
+                                source_info: 'Your uploaded files'
+                            }));
+                        }
+                        
+                        currentFiles = files;
+                        selectedFiles.clear(); // Reset selection
+                        displayFiles();
+                    } catch (error) {
+                        showModalMessage(`Failed to refresh files: ${error.message}`, 'error');
+                    }
+                }, 1000);
+                
+            } catch (error) {
+                showModalMessage(`Failed to delete file: ${error.message}`, 'error');
+            }
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        // Event listeners
+        modalLoginTab.addEventListener('click', () => showModalTab('login'));
+        modalRegisterTab.addEventListener('click', () => showModalTab('register'));
+
+        modalLoginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('modal-login-username').value;
+            const password = document.getElementById('modal-login-password').value;
+            
+            if (!username || !password) {
+                showModalMessage('Please fill in all fields', 'error');
+                return;
+            }
+            
+            await login(username, password);
+        });
+
+        modalRegisterForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('modal-register-name').value;
+            const username = document.getElementById('modal-register-username').value;
+            const password = document.getElementById('modal-register-password').value;
+            
+            if (!name || !username || !password) {
+                showModalMessage('Please fill in all fields', 'error');
+                return;
+            }
+            
+            await register(name, username, password);
+        });
+
+        // Tab navigation
+        document.querySelectorAll('[data-tab]').forEach(button => {
+            button.addEventListener('click', () => {
+                switchTab(button.dataset.tab);
+            });
+        });
+
+        // Check if user is already logged in
+        async function checkAuthStatus() {
+            if (authToken) {
+                try {
+                    const userInfo = await apiCall('http://localhost:8000/api/auth/verify');
+                    currentUser = userInfo;
+                    isGuestUser = false;
+                } catch (error) {
+                    // Token is invalid, clear it
+                    authToken = null;
+                    localStorage.removeItem('authToken');
+                }
+            }
+            updateUserInterface();
+        }
+
+        // Close modal on backdrop click
+        authModal.addEventListener('click', (e) => {
+            if (e.target === authModal) {
+                closeAuthModal();
+            }
+        });
+
+        // Close preview modal on backdrop click
+        document.getElementById('filePreviewModal').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('filePreviewModal')) {
+                closePreviewModal();
+            }
+        });
+
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', () => {
+            checkAuthStatus();
+            // Initialize clean state for data tab
+            initializeCleanState();
+            // Auto-load files for portfolio demo
+            setTimeout(() => {
+                loadFiles();
+            }, 1000); // Small delay to ensure everything is initialized
+        });
+    </script>
+</body>
+</html>

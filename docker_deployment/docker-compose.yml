@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  analytics-ai-backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: analytics-ai-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_PATH=/app/data/analytics_ai.db
+      - JWT_SECRET=docker_deployment_jwt_secret_key
+      - GEMINI_API_KEY=dummy_key_for_docker_deployment
+      - PYTHONPATH=/app
+      - PROJECT_ID=ai-analysis-v1
+      - DEFAULT_BUCKET=ai-analysis-default-bucket
+    volumes:
+      - ./data:/app/data
+      - ~/.config/gcloud:/root/.config/gcloud
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:8000/api/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  analytics-ai-frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: analytics-ai-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - analytics-ai-backend
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:80/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+networks:
+  default:
+    name: analytics-ai-network
