@@ -410,16 +410,23 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 <div class="bg-white rounded-lg shadow-lg p-8">
                     <div class="flex items-center justify-between mb-8">
-                        <div>
-                            <h2 class="text-3xl font-bold text-gray-900 mb-2">Data Management</h2>
-                            <p class="text-gray-600">Connect to Google Cloud Storage and manage your data files</p>
+                        <div class="flex items-center">
+                            <button onclick="toggleDataManagement()" class="flex items-center text-left mr-4">
+                                <h2 class="text-3xl font-bold text-gray-900 mb-2">Data Management</h2>
+                                <svg id="data-management-arrow" class="w-6 h-6 text-blue-600 transform transition-transform duration-200 ml-3 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </button>
                         </div>
                         <div class="flex items-center space-x-4">
                             <span class="text-sm text-gray-500" id="userStatus">Guest User</span>
                             <button onclick="logout()" class="text-gray-600 hover:text-blue-600 transition-colors">Logout</button>
                         </div>
                     </div>
+                    <p class="text-gray-600 mb-6">Connect to Google Cloud Storage and manage your data files</p>
 
+                    <!-- Collapsible Data Management Content -->
+                    <div id="data-management-content" class="hidden">
                     <!-- Instructions Section -->
                     <div class="bg-blue-50 border border-blue-200 rounded-lg mb-8">
                         <div class="p-4">
@@ -581,6 +588,143 @@
                             </div>
                         </div>
                     </div>
+                    </div> <!-- End of collapsible data management content -->
+
+                    <!-- Analysis Tables Section -->
+                    <div class="mt-8">
+                        <div class="flex items-center mb-6">
+                            <button onclick="toggleAnalysisTables()" class="flex items-center text-left mr-4">
+                                <h2 class="text-3xl font-bold text-gray-900 mb-2">Analysis Tables</h2>
+                                <svg id="analysis-tables-arrow" class="w-6 h-6 text-blue-600 transform transition-transform duration-200 ml-3 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <p class="text-gray-600 mb-6">Generate analysis tables from your data using natural language queries</p>
+
+                        <!-- Collapsible Analysis Tables Content -->
+                        <div id="analysis-tables-content">
+                        <!-- Instructions Section -->
+                        <div class="bg-blue-50 border border-blue-200 rounded-lg mb-8">
+                            <div class="p-4">
+                                <button onclick="toggleAnalysisInstructions()" class="flex items-center justify-between w-full text-left">
+                                    <div class="flex items-center">
+                                        <svg class="w-5 h-5 text-blue-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                        <h3 class="text-lg font-semibold text-blue-900">How to analyze your data?</h3>
+                                    </div>
+                                    <svg id="analysis-instructions-arrow" class="w-5 h-5 text-blue-600 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </button>
+                                <div id="analysis-instructions-content" class="mt-4 space-y-3 text-gray-700 hidden">
+                                    <div class="flex items-start">
+                                        <span class="inline-block w-6 h-6 bg-blue-600 text-white text-sm font-bold rounded-full flex items-center justify-center mr-3 mt-0.5">1</span>
+                                        <div>
+                                            <p class="font-medium">After selecting data files from Data tab, ask what you want to analyse:</p>
+                                            <p class="text-sm">Example: <strong>"Who is the all time best driver, points wise"</strong></p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start">
+                                        <span class="inline-block w-6 h-6 bg-blue-600 text-white text-sm font-bold rounded-full flex items-center justify-center mr-3 mt-0.5">2</span>
+                                        <div>
+                                            <p class="font-medium">Select the language you want the code in and click generate:</p>
+                                            <p class="text-sm">Choose between <strong>Python</strong> or <strong>SQL</strong> based on your preference.</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start">
+                                        <span class="inline-block w-6 h-6 bg-blue-600 text-white text-sm font-bold rounded-full flex items-center justify-center mr-3 mt-0.5">3</span>
+                                        <div>
+                                            <p class="font-medium">Modify the code if needed and rerun:</p>
+                                            <p class="text-sm">The aggregated table is ready for your analysis!</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Analysis Interface -->
+                        <div class="bg-white border border-gray-200 rounded-lg shadow-lg mb-8">
+                            <div class="p-6">
+                                <h3 class="text-xl font-bold text-gray-900 mb-4">Ask Your Question</h3>
+                                
+                                <!-- Query Input -->
+                                <div class="mb-4">
+                                    <label for="analysisQuery" class="block text-sm font-medium text-gray-700 mb-2">
+                                        What would you like to analyze?
+                                    </label>
+                                    <textarea 
+                                        id="analysisQuery" 
+                                        rows="3" 
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                                        placeholder="e.g., Who is the all time best driver, points wise?"
+                                    ></textarea>
+                                </div>
+
+                                <!-- Language Selection -->
+                                <div class="mb-6">
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                                        Choose your preferred language:
+                                    </label>
+                                    <div class="flex space-x-4">
+                                        <label class="flex items-center">
+                                            <input type="radio" name="analysisLanguage" value="python" class="mr-2" checked>
+                                            <span class="text-sm text-gray-700">Python</span>
+                                        </label>
+                                        <label class="flex items-center">
+                                            <input type="radio" name="analysisLanguage" value="sql" class="mr-2">
+                                            <span class="text-sm text-gray-700">SQL</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <!-- Generate Button -->
+                                <button 
+                                    id="generateAnalysisBtn"
+                                    class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium"
+                                    onclick="generateAnalysis()"
+                                >
+                                    Generate Code
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Generated Code Section -->
+                        <div id="generatedAnalysisSection" class="bg-white border border-gray-200 rounded-lg shadow-lg mb-8 hidden">
+                            <div class="p-6">
+                                <h3 class="text-xl font-bold text-gray-900 mb-4">Generated Code</h3>
+                                <div class="bg-gray-900 rounded-lg p-4 mb-4">
+                                    <pre id="generatedAnalysisCode" class="text-green-400 text-sm overflow-x-auto"></pre>
+                                </div>
+                                <div class="flex space-x-4">
+                                    <button 
+                                        id="runAnalysisBtn"
+                                        class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors"
+                                        onclick="runAnalysis()"
+                                    >
+                                        Run Code
+                                    </button>
+                                    <button 
+                                        id="modifyAnalysisBtn"
+                                        class="bg-yellow-600 text-white px-4 py-2 rounded-lg hover:bg-yellow-700 transition-colors"
+                                        onclick="editAnalysisCode()"
+                                    >
+                                        Modify Code
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Results Section -->
+                        <div id="analysisResultsSection" class="bg-white border border-gray-200 rounded-lg shadow-lg hidden">
+                            <div class="p-6">
+                                <h3 class="text-xl font-bold text-gray-900 mb-4">Analysis Results</h3>
+                                <div id="analysisResultsTable" class="overflow-x-auto"></div>
+                            </div>
+                        </div>
+                        </div> <!-- End of collapsible analysis tables content -->
+                    </div> <!-- End of Analysis Tables Section -->
 
         <!-- File Preview Modal -->
         <div id="filePreviewModal" class="fixed inset-0 bg-black bg-opacity-50 modal-backdrop z-50 hidden">
@@ -801,6 +945,185 @@
                 content.classList.add('hidden');
                 arrow.style.transform = 'rotate(0deg)';
             }
+        }
+
+        // Toggle data management section
+        function toggleDataManagement() {
+            const content = document.getElementById('data-management-content');
+            const arrow = document.getElementById('data-management-arrow');
+            const summaryEl = document.getElementById('selectionSummary');
+            const dataFilesSection = document.getElementById('dataFilesSection');
+            const loadingState = document.getElementById('loadingState');
+            const emptyState = document.getElementById('emptyState');
+            
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                arrow.style.transform = 'rotate(180deg)';
+                // Show data files section and selection summary when expanding
+                if (dataFilesSection) {
+                    dataFilesSection.classList.remove('hidden');
+                }
+                if (summaryEl) {
+                    summaryEl.style.display = 'block';
+                }
+                updateSelectionSummary();
+            } else {
+                content.classList.add('hidden');
+                arrow.style.transform = 'rotate(0deg)';
+                // Hide all data management content when collapsing
+                if (dataFilesSection) {
+                    dataFilesSection.classList.add('hidden');
+                }
+                if (summaryEl) {
+                    summaryEl.style.display = 'none';
+                }
+                if (loadingState) {
+                    loadingState.classList.add('hidden');
+                }
+                if (emptyState) {
+                    emptyState.classList.add('hidden');
+                }
+            }
+        }
+
+        // Analysis Tables functions
+        function toggleAnalysisTables() {
+            const content = document.getElementById('analysis-tables-content');
+            const arrow = document.getElementById('analysis-tables-arrow');
+            
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                arrow.style.transform = 'rotate(180deg)';
+            } else {
+                content.classList.add('hidden');
+                arrow.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        // Initialize Analysis Tables arrow to expanded state
+        document.addEventListener('DOMContentLoaded', function() {
+            const analysisArrow = document.getElementById('analysis-tables-arrow');
+            if (analysisArrow) {
+                analysisArrow.style.transform = 'rotate(180deg)';
+            }
+        });
+
+        function toggleAnalysisInstructions() {
+            const content = document.getElementById('analysis-instructions-content');
+            const arrow = document.getElementById('analysis-instructions-arrow');
+            
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                arrow.style.transform = 'rotate(180deg)';
+            } else {
+                content.classList.add('hidden');
+                arrow.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        function generateAnalysis() {
+            const query = document.getElementById('analysisQuery').value.trim();
+            const language = document.querySelector('input[name="analysisLanguage"]:checked').value;
+            
+            if (!query) {
+                showModalMessage('Please enter your analysis question first!', 'error');
+                return;
+            }
+            
+            // Show loading state
+            const generateBtn = document.getElementById('generateAnalysisBtn');
+            generateBtn.textContent = 'Generating...';
+            generateBtn.disabled = true;
+            
+            // Simulate code generation (replace with actual API call)
+            setTimeout(() => {
+                const sampleCode = language === 'python' 
+                    ? `# ${query}\nimport pandas as pd\n\n# Load your data\n# df = pd.read_csv('your_data.csv')\n\n# Your analysis code will be generated here\nprint("Analysis completed!")`
+                    : `-- ${query}\nSELECT \n    * \nFROM your_table \n-- Your SQL query will be generated here\nLIMIT 10;`;
+                
+                document.getElementById('generatedAnalysisCode').textContent = sampleCode;
+                document.getElementById('generatedAnalysisSection').classList.remove('hidden');
+                
+                generateBtn.textContent = 'Generate Code';
+                generateBtn.disabled = false;
+                
+                showModalMessage('Code generated successfully!', 'success');
+            }, 2000);
+        }
+
+        function runAnalysis() {
+            const runBtn = document.getElementById('runAnalysisBtn');
+            runBtn.textContent = 'Running...';
+            runBtn.disabled = true;
+            
+            // Simulate code execution (replace with actual API call)
+            setTimeout(() => {
+                // Show results section with sample data
+                const resultsTable = document.getElementById('analysisResultsTable');
+                resultsTable.innerHTML = `
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Driver</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total Points</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Races</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Lewis Hamilton</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">4,636</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">333</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Sebastian Vettel</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">3,098</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">299</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                `;
+                
+                document.getElementById('analysisResultsSection').classList.remove('hidden');
+                runBtn.textContent = 'Run Code';
+                runBtn.disabled = false;
+                
+                showModalMessage('Code executed successfully! The aggregated table is ready.', 'success');
+            }, 1500);
+        }
+
+        function editAnalysisCode() {
+            const codeElement = document.getElementById('generatedAnalysisCode');
+            const currentCode = codeElement.textContent;
+            
+            // Create an editable textarea
+            const textarea = document.createElement('textarea');
+            textarea.value = currentCode;
+            textarea.className = 'w-full h-64 p-4 bg-gray-900 text-green-400 text-sm font-mono border-0 resize-none';
+            textarea.style.fontFamily = 'monospace';
+            
+            // Replace the pre element with textarea
+            codeElement.parentNode.replaceChild(textarea, codeElement);
+            
+            // Add save button
+            const saveBtn = document.createElement('button');
+            saveBtn.textContent = 'Save Changes';
+            saveBtn.className = 'bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors ml-4';
+            saveBtn.onclick = () => {
+                const newCode = textarea.value;
+                const newPre = document.createElement('pre');
+                newPre.id = 'generatedAnalysisCode';
+                newPre.className = 'text-green-400 text-sm overflow-x-auto';
+                newPre.textContent = newCode;
+                
+                textarea.parentNode.replaceChild(newPre, textarea);
+                saveBtn.remove();
+                
+                showModalMessage('Code modified successfully!', 'success');
+            };
+            
+            document.getElementById('generatedAnalysisSection').appendChild(saveBtn);
+            textarea.focus();
         }
 
         // Modal tab switching
@@ -1168,9 +1491,13 @@
                 dataFilesSection.insertBefore(summary, dataFilesGrid);
             }
 
-            dataFilesSection.classList.remove('hidden');
-            hideLoadingState();
-            hideEmptyState();
+            // Only show data files section if collapsible container is visible
+            const dataManagementContent = document.getElementById('data-management-content');
+            if (!dataManagementContent || !dataManagementContent.classList.contains('hidden')) {
+                dataFilesSection.classList.remove('hidden');
+                hideLoadingState();
+                hideEmptyState();
+            }
         }
 
         async function previewFile(fileName, fileSource) {
@@ -1617,9 +1944,13 @@
         }
 
         function showLoadingState() {
-            document.getElementById('loadingState').classList.remove('hidden');
-            document.getElementById('dataFilesSection').classList.add('hidden');
-            document.getElementById('emptyState').classList.add('hidden');
+            // Only show loading state if collapsible container is visible
+            const dataManagementContent = document.getElementById('data-management-content');
+            if (!dataManagementContent || !dataManagementContent.classList.contains('hidden')) {
+                document.getElementById('loadingState').classList.remove('hidden');
+                document.getElementById('dataFilesSection').classList.add('hidden');
+                document.getElementById('emptyState').classList.add('hidden');
+            }
         }
 
         function hideLoadingState() {
@@ -1627,9 +1958,13 @@
         }
 
         function showEmptyState() {
-            document.getElementById('emptyState').classList.remove('hidden');
-            document.getElementById('dataFilesSection').classList.add('hidden');
-            document.getElementById('loadingState').classList.add('hidden');
+            // Only show empty state if collapsible container is visible
+            const dataManagementContent = document.getElementById('data-management-content');
+            if (!dataManagementContent || !dataManagementContent.classList.contains('hidden')) {
+                document.getElementById('emptyState').classList.remove('hidden');
+                document.getElementById('dataFilesSection').classList.add('hidden');
+                document.getElementById('loadingState').classList.add('hidden');
+            }
         }
 
         function hideEmptyState() {
@@ -1720,6 +2055,12 @@
         }
 
         function updateSelectionSummary() {
+            // Only show selection summary if data management content is visible
+            const dataManagementContent = document.getElementById('data-management-content');
+            if (dataManagementContent && dataManagementContent.classList.contains('hidden')) {
+                return; // Don't show summary if collapsible container is hidden
+            }
+            
             // Add or update selection summary
             let summaryEl = document.getElementById('selectionSummary');
             if (!summaryEl) {
