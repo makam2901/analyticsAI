@@ -68,15 +68,12 @@
                             <button data-tab="data" class="tab-button border-b-2 font-medium px-1 py-4 text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300 hidden">
                                 Data
                             </button>
-                            <button data-tab="analysis" class="tab-button border-b-2 font-medium px-1 py-4 text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300 hidden">
-                                Analysis
-                            </button>
                         </div>
                     </div>
                     <div class="flex items-center space-x-4">
-                        <button onclick="scrollToSection('features')" class="text-gray-600 hover:text-blue-600 transition-colors">Features</button>
-                        <button onclick="scrollToSection('how-it-works')" class="text-gray-600 hover:text-blue-600 transition-colors">How it Works</button>
-                        <button onclick="scrollToSection('motivation')" class="text-gray-600 hover:text-blue-600 transition-colors">Why We Built This</button>
+                        <button onclick="scrollToSection('features')" class="text-gray-600 hover:text-blue-600 transition-colors" id="featuresNavBtn">Features</button>
+                        <button onclick="scrollToSection('how-it-works')" class="text-gray-600 hover:text-blue-600 transition-colors" id="howItWorksNavBtn">How it Works</button>
+                        <button onclick="scrollToSection('motivation')" class="text-gray-600 hover:text-blue-600 transition-colors" id="whyWeBuiltNavBtn">Why We Built This</button>
                         <button onclick="showAuthModal()" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors" id="getStartedBtn">Get Started</button>
                         <button onclick="logout()" class="text-gray-600 hover:text-blue-600 transition-colors hidden" id="logoutBtn">Logout</button>
                     </div>
@@ -456,7 +453,7 @@
                                     <span class="inline-block w-6 h-6 bg-blue-600 text-white text-sm font-bold rounded-full flex items-center justify-center mr-3 mt-0.5">3</span>
                                     <div>
                                         <p class="font-medium">Start your analysis:</p>
-                                        <p class="text-sm">Go to the <strong>Analysis Tab</strong> to begin analyzing your selected data with AI-powered insights.</p>
+                                        <p class="text-sm">Your data is ready for analysis with AI-powered insights.</p>
                                     </div>
                                 </div>
                             </div>
@@ -699,67 +696,7 @@
             </div>
         </div>
 
-        <!-- Analysis Tab Content -->
-        <div id="analysisContent" class="tab-content min-h-screen bg-gray-50 hidden">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                <div class="bg-white rounded-lg shadow-lg p-8">
-                    <div class="flex items-center justify-between mb-8">
-                        <div>
-                            <h2 class="text-3xl font-bold text-gray-900 mb-2">AI Analysis</h2>
-                            <p class="text-gray-600">Analyze your data with AI-powered insights</p>
-                        </div>
-                        <div class="flex items-center space-x-4">
-                            <span class="text-sm text-gray-500" id="userStatus">Guest User</span>
-                            <button onclick="logout()" class="text-gray-600 hover:text-blue-600 transition-colors">Logout</button>
-                        </div>
-                    </div>
 
-                    <!-- Analysis Content Placeholder -->
-                    <div class="text-center py-16">
-                        <div class="mb-8">
-                            <svg class="w-24 h-24 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
-                            </svg>
-                            <h3 class="text-2xl font-semibold text-gray-900 mb-4">Analysis Tools Coming Soon</h3>
-                            <p class="text-gray-600 max-w-2xl mx-auto">
-                                This is where you'll be able to run AI-powered analysis on your selected data. 
-                                Features will include statistical analysis, data visualization, and intelligent insights.
-                            </p>
-                        </div>
-                        
-                        <div class="bg-blue-50 border border-blue-200 rounded-lg p-6 max-w-2xl mx-auto">
-                            <h4 class="text-lg font-semibold text-blue-900 mb-3">What's Coming Next?</h4>
-                            <ul class="text-left text-gray-700 space-y-2">
-                                <li class="flex items-center">
-                                    <svg class="w-5 h-5 text-blue-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                    Statistical analysis and data profiling
-                                </li>
-                                <li class="flex items-center">
-                                    <svg class="w-5 h-5 text-blue-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                    Interactive data visualizations
-                                </li>
-                                <li class="flex items-center">
-                                    <svg class="w-5 h-5 text-blue-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                    AI-generated insights and recommendations
-                                </li>
-                                <li class="flex items-center">
-                                    <svg class="w-5 h-5 text-blue-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                    Export results and reports
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 
     <script>
@@ -784,7 +721,6 @@
             // Hide all tab contents
             document.querySelectorAll('.tab-content').forEach(content => {
                 content.classList.remove('active');
-                content.classList.add('hidden');
             });
             
             // Remove active class from all tab buttons
@@ -795,10 +731,26 @@
             // Show selected tab content
             const selectedContent = document.getElementById(tabName + 'Content');
             selectedContent.classList.add('active');
-            selectedContent.classList.remove('hidden');
             
             // Add active class to selected tab button
             document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+            
+            // Show/hide navigation buttons based on current tab
+            const featuresBtn = document.getElementById('featuresNavBtn');
+            const howItWorksBtn = document.getElementById('howItWorksNavBtn');
+            const whyWeBuiltBtn = document.getElementById('whyWeBuiltNavBtn');
+            
+            if (tabName === 'home') {
+                // Show navigation buttons on home tab
+                featuresBtn.classList.remove('hidden');
+                howItWorksBtn.classList.remove('hidden');
+                whyWeBuiltBtn.classList.remove('hidden');
+            } else {
+                // Hide navigation buttons on other tabs
+                featuresBtn.classList.add('hidden');
+                howItWorksBtn.classList.add('hidden');
+                whyWeBuiltBtn.classList.add('hidden');
+            }
             
             // Scroll to top of the page when switching tabs
             window.scrollTo({
@@ -834,6 +786,8 @@
                 arrow.style.transform = 'rotate(0deg)';
             }
         }
+
+
 
         // Toggle connection section
         function toggleConnectionSection() {
@@ -1020,7 +974,6 @@
         // Update UI based on auth status
         function updateUserInterface() {
             const dataTab = document.querySelector('[data-tab="data"]');
-            const analysisTab = document.querySelector('[data-tab="analysis"]');
             const userStatus = document.getElementById('userStatus');
             
             if (authToken || isGuestUser) {
@@ -1028,7 +981,6 @@
                 getStartedBtn.classList.add('hidden');
                 logoutBtn.classList.remove('hidden');
                 dataTab.classList.remove('hidden');
-                analysisTab.classList.remove('hidden');
                 
                 if (userStatus) {
                     userStatus.textContent = isGuestUser ? 'Guest User' : `Welcome, ${currentUser?.name || 'User'}`;
@@ -1038,7 +990,6 @@
                 getStartedBtn.classList.remove('hidden');
                 logoutBtn.classList.add('hidden');
                 dataTab.classList.add('hidden');
-                analysisTab.classList.add('hidden');
                 
                 if (userStatus) {
                     userStatus.textContent = 'Guest User';
@@ -1959,6 +1910,8 @@
             checkAuthStatus();
             // Initialize clean state for data tab
             initializeCleanState();
+            // Initialize navigation buttons visibility (start on home tab)
+            switchTab('home');
             // Auto-load files for portfolio demo
             setTimeout(() => {
                 loadFiles();

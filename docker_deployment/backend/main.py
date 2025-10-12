@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 from database.database import Database
 from models.user import User
 from models.session import Session
-from routes import auth, data, analytics
+from routes import auth, data
 
 # Load environment variables
 load_dotenv('.env.development' if os.getenv('NODE_ENV') != 'production' else '.env.production')
@@ -77,7 +77,6 @@ async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(s
 # Include routers
 app.include_router(auth.router, prefix="/api/auth", tags=["Authentication"])
 app.include_router(data.router, prefix="/api/data", tags=["Data Management"])
-app.include_router(analytics.router, prefix="/api/analytics", tags=["Analytics"])
 
 @app.get("/")
 async def root():
