@@ -75,6 +75,7 @@ async def get_combined_files(public_bucket: str = None):
                 default_files = await get_bucket_files(DEFAULT_BUCKET)
                 for file in default_files:
                     file["source"] = "uploaded"
+                    file["bucket"] = DEFAULT_BUCKET
                     file["source_info"] = "Your uploaded files"
                     combined_files.append(file)
             except Exception as e:
@@ -90,6 +91,7 @@ async def get_combined_files(public_bucket: str = None):
                         existing_file = next((f for f in combined_files if f["name"] == file["name"]), None)
                         if not existing_file:
                             file["source"] = "public"
+                            file["bucket"] = public_bucket
                             file["source_info"] = f"Public bucket: {public_bucket}"
                             combined_files.append(file)
                 except Exception as e:

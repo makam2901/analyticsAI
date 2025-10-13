@@ -86,7 +86,7 @@
                                 Home
                             </button>
                             <button data-tab="data" class="tab-button border-b-2 font-medium px-1 py-4 text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300 hidden">
-                                Data
+                                Tool
                             </button>
                         </div>
                     </div>
@@ -640,7 +640,7 @@
                                     <div class="flex items-start">
                                         <span class="inline-block w-6 h-6 bg-blue-600 text-white text-sm font-bold rounded-full flex items-center justify-center mr-3 mt-0.5">1</span>
                                         <div>
-                                            <p class="font-medium">After selecting data files from Data tab, ask what you want to analyse:</p>
+                                            <p class="font-medium">After selecting data files from Tool tab, ask what you want to analyse:</p>
                                             <p class="text-sm">Example: <strong>"Who is the all time best driver, points wise"</strong></p>
                                         </div>
                                     </div>
@@ -737,7 +737,7 @@
                                             class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors"
                                             onclick="runAnalysis()"
                                         >
-                                            Run Code
+                                            Re-run Code
                                         </button>
                                         <!-- Edit Code button removed - Ace Editor is always editable -->
                                     </div>
@@ -756,7 +756,7 @@
                                             Expand View
                                         </button>
                                     </div>
-                                    <div class="max-h-64 overflow-auto border border-gray-200 rounded-lg">
+                                    <div class="max-h-[600px] min-h-[500px] overflow-auto border border-gray-200 rounded-lg">
                                         <div id="analysisResultsTable" class="min-w-full"></div>
                                     </div>
                                 </div>
@@ -953,8 +953,6 @@
                 showLineNumbers: true,
                 showGutter: true,
                 highlightActiveLine: true,
-                enableBasicAutocompletion: true,
-                enableLiveAutocompletion: true,
                 wrap: true,
                 maxLines: Infinity,
                 minLines: 10
@@ -972,8 +970,6 @@
                 showLineNumbers: true,
                 showGutter: true,
                 highlightActiveLine: true,
-                enableBasicAutocompletion: true,
-                enableLiveAutocompletion: true,
                 wrap: true,
                 maxLines: Infinity,
                 minLines: 15
@@ -1230,7 +1226,20 @@
                     aceEditor.clearSelection();
                     
                     document.getElementById('generatedAnalysisSection').classList.remove('hidden');
-                    showModalMessage('Code generated successfully!', 'success');
+                    showModalMessage('Code generated successfully! Running automatically...', 'success');
+                    
+                    // Scroll to the generated code section
+                    setTimeout(() => {
+                        document.getElementById('generatedAnalysisSection').scrollIntoView({ 
+                            behavior: 'smooth', 
+                            block: 'start' 
+                        });
+                    }, 100);
+                    
+                    // Automatically run the generated code after a short delay
+                    setTimeout(() => {
+                        runAnalysis();
+                    }, 1500);
                 } else {
                     showModalMessage(`Error generating code: ${result.error || 'Unknown error'}`, 'error');
                 }
@@ -1263,11 +1272,17 @@
                     
                     console.log('File details:', { fileName, fileInfo, fileType }); // Debug log
                     
-                    // Get source information from the file card data attributes or text
+                    // Get source and bucket information from the file card data attributes
                     const sourceElement = fileCard.querySelector('[data-source]');
                     const source = sourceElement ? sourceElement.getAttribute('data-source') : 'uploaded';
                     const bucketElement = fileCard.querySelector('[data-bucket]');
                     const bucket = bucketElement ? bucketElement.getAttribute('data-bucket') : 'ai-analysis-default-bucket';
+                    
+                    console.log(`File: ${fileName}, Source: ${source}, Bucket: ${bucket}`);
+                    console.log(`File card data attributes:`, {
+                        dataSource: fileCard.getAttribute('data-source'),
+                        dataBucket: fileCard.getAttribute('data-bucket')
+                    });
                     
                     selectedFiles.push({
                         filename: fileName,
@@ -1437,6 +1452,14 @@
                     const resultsSection = document.getElementById('analysisResultsSection');
                     console.log('Results section element:', resultsSection);
                     resultsSection.classList.remove('hidden');
+                    
+                    // Auto-scroll to results section after a short delay
+                    setTimeout(() => {
+                        resultsSection.scrollIntoView({ 
+                            behavior: 'smooth', 
+                            block: 'start' 
+                        });
+                    }, 300);
                     
                     // Also ensure the Analysis Tables section is expanded so results are visible
                     const analysisTablesContent = document.getElementById('analysis-tables-content');
