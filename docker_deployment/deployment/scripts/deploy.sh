@@ -52,10 +52,9 @@ docker tag gcr.io/$PROJECT_ID/analytics-ai-backend:$TIMESTAMP gcr.io/$PROJECT_ID
 docker push gcr.io/$PROJECT_ID/analytics-ai-backend:$TIMESTAMP
 docker push gcr.io/$PROJECT_ID/analytics-ai-backend:latest
 
-# Build and push frontend image with placeholder backend URL
+# Build and push frontend image
 echo "Building and pushing frontend image..."
-BACKEND_URL_PLACEHOLDER="https://analytics-ai-backend-placeholder-uc.a.run.app"
-docker buildx build --platform linux/amd64 --load -f docker/Dockerfile.frontend --build-arg BACKEND_URL=$BACKEND_URL_PLACEHOLDER -t gcr.io/$PROJECT_ID/analytics-ai-frontend:$TIMESTAMP .
+docker buildx build --platform linux/amd64 --load -f docker/Dockerfile.frontend -t gcr.io/$PROJECT_ID/analytics-ai-frontend:$TIMESTAMP .
 docker tag gcr.io/$PROJECT_ID/analytics-ai-frontend:$TIMESTAMP gcr.io/$PROJECT_ID/analytics-ai-frontend:latest
 docker push gcr.io/$PROJECT_ID/analytics-ai-frontend:$TIMESTAMP
 docker push gcr.io/$PROJECT_ID/analytics-ai-frontend:latest
@@ -117,16 +116,8 @@ if [[ -z "$BACKEND_URL" || "$BACKEND_URL" == "None" ]]; then
     exit 1
 fi
 
-# Rebuild frontend image with correct backend URL
-echo "🔄 Rebuilding frontend with correct backend URL: $BACKEND_URL"
-NEW_TIMESTAMP=$(date +%s)
-docker buildx build --platform linux/amd64 --load -f docker/Dockerfile.frontend --build-arg BACKEND_URL=$BACKEND_URL -t gcr.io/$PROJECT_ID/analytics-ai-frontend:$NEW_TIMESTAMP .
-docker tag gcr.io/$PROJECT_ID/analytics-ai-frontend:$NEW_TIMESTAMP gcr.io/$PROJECT_ID/analytics-ai-frontend:latest
-docker push gcr.io/$PROJECT_ID/analytics-ai-frontend:$NEW_TIMESTAMP
-docker push gcr.io/$PROJECT_ID/analytics-ai-frontend:latest
-
-# Update frontend configuration with backend URL
-echo "Updating frontend configuration with backend URL: $BACKEND_URL"
+# Update frontend configuration
+echo "Updating frontend configuration..."
 sed "s/PROJECT_ID/$PROJECT_ID/g" deployment/cloud-run/frontend-service.yaml > deployment/cloud-run/frontend-service-deploy.yaml
 
 # Deploy frontend to Cloud Run

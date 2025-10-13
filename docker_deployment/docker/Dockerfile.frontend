@@ -4,28 +4,13 @@ FROM node:18-alpine AS builder
 # Set working directory
 WORKDIR /app
 
-# Accept build argument for backend URL
-ARG BACKEND_URL
-ENV BACKEND_URL=${BACKEND_URL}
-
 # Copy HTML file
 COPY frontend/index.html .
-
-# Create configuration injection script
-RUN echo 'const fs = require("fs"); \
-const backendUrl = process.env.BACKEND_URL || "http://localhost:8000"; \
-let html = fs.readFileSync("index.html", "utf8"); \
-html = html.replace(/\\$\\{BACKEND_URL\\}/g, backendUrl); \
-fs.writeFileSync("index.html", html); \
-console.log("Configuration injected:", backendUrl);' > inject-config.js
-
-# Run the configuration injection script
-RUN node inject-config.js
 
 # Production stage with nginx
 FROM nginx:alpine AS production
 
-# Copy HTML file with injected configuration
+# Copy HTML file
 COPY --from=builder /app/index.html /usr/share/nginx/html/
 
 # Create nginx configuration
