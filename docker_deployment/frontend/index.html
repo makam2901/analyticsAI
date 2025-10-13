@@ -6,6 +6,11 @@
     <title>Analytics AI - Fast-Track Your Data Analysis 🚀</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Ace Editor -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.23.4/ace.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.23.4/mode-python.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.23.4/theme-monokai.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.23.4/theme-github.min.js" type="text/javascript" charset="utf-8"></script>
     <style>
         body { font-family: 'Inter', sans-serif; }
         .spinner { animation: spin 1s linear infinite; }
@@ -48,6 +53,21 @@
             border-color: #3b82f6; 
             color: #3b82f6; 
             background-color: #eff6ff; 
+        }
+        
+        /* Ace Editor customizations */
+        .ace_editor {
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace !important;
+            border-radius: 0.375rem !important;
+        }
+        
+        .ace_gutter {
+            background-color: #f8fafc !important;
+            border-right: 1px solid #e2e8f0 !important;
+        }
+        
+        .ace_active-line {
+            background-color: #f1f5f9 !important;
         }
     </style>
 </head>
@@ -709,7 +729,7 @@
                                                 Copy Code
                                             </button>
                                         </div>
-                                        <pre id="generatedAnalysisCode" class="text-gray-800 text-sm overflow-auto bg-white border border-gray-200 rounded p-3 font-mono leading-relaxed max-h-64 whitespace-pre-wrap"></pre>
+                                        <div id="generatedAnalysisCode" style="height: 300px; border: 1px solid #d1d5db; border-radius: 0.375rem;"></div>
                                     </div>
                                     <div class="flex space-x-4">
                                         <button 
@@ -719,13 +739,7 @@
                                         >
                                             Run Code
                                         </button>
-                                        <button 
-                                            id="modifyAnalysisBtn"
-                                            class="bg-yellow-600 text-white px-4 py-2 rounded-lg hover:bg-yellow-700 transition-colors"
-                                            onclick="editAnalysisCode()"
-                                        >
-                                            Modify Code
-                                        </button>
+                                        <!-- Edit Code button removed - Ace Editor is always editable -->
                                     </div>
                                 </div>
                             </div>
@@ -890,7 +904,7 @@
                         Copy Code
                     </button>
                 </div>
-                <pre id="popupCodeContent" class="text-gray-800 text-sm bg-white border border-gray-200 rounded p-4 font-mono leading-relaxed whitespace-pre-wrap max-h-96 overflow-auto"></pre>
+                <div id="popupCodeContent" style="height: 400px; border: 1px solid #d1d5db; border-radius: 0.375rem;"></div>
             </div>
             <div class="flex justify-end space-x-4">
                 <button onclick="closeCodePopup()" class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors">
@@ -925,6 +939,59 @@
     <script>
         // Global state
         let currentUser = null;
+        let aceEditor = null;
+        let acePopupEditor = null;
+
+        // Initialize Ace Editor
+        function initializeAceEditor() {
+            // Main code editor
+            aceEditor = ace.edit("generatedAnalysisCode");
+            aceEditor.setTheme("ace/theme/github");
+            aceEditor.session.setMode("ace/mode/python");
+            aceEditor.setOptions({
+                fontSize: "14px",
+                showLineNumbers: true,
+                showGutter: true,
+                highlightActiveLine: true,
+                enableBasicAutocompletion: true,
+                enableLiveAutocompletion: true,
+                wrap: true,
+                maxLines: Infinity,
+                minLines: 10
+            });
+            aceEditor.setReadOnly(false);
+        }
+
+        // Initialize Ace Editor for popup
+        function initializeAcePopupEditor() {
+            acePopupEditor = ace.edit("popupCodeContent");
+            acePopupEditor.setTheme("ace/theme/github");
+            acePopupEditor.session.setMode("ace/mode/python");
+            acePopupEditor.setOptions({
+                fontSize: "14px",
+                showLineNumbers: true,
+                showGutter: true,
+                highlightActiveLine: true,
+                enableBasicAutocompletion: true,
+                enableLiveAutocompletion: true,
+                wrap: true,
+                maxLines: Infinity,
+                minLines: 15
+            });
+            acePopupEditor.setReadOnly(false);
+        }
+
+        // Initialize editors when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Small delay to ensure DOM is fully ready
+            setTimeout(() => {
+                try {
+                    initializeAceEditor();
+                } catch (e) {
+                    console.log('Main Ace Editor not ready yet, will initialize later');
+                }
+            }, 100);
+        });
         let authToken = localStorage.getItem('authToken');
         let isGuestUser = false;
 
@@ -1147,9 +1214,20 @@
                 console.log('Code content:', result.code); // Debug the actual code
                 
                 if (result.success) {
-                    const codeElement = document.getElementById('generatedAnalysisCode');
-                    // Simply set the code as text content
-                    codeElement.textContent = result.code;
+                    // Set the code in Ace Editor
+                    if (!aceEditor) {
+                        try {
+                            initializeAceEditor();
+                        } catch (e) {
+                            console.log('Failed to initialize Ace Editor:', e);
+                            // Fallback to text content
+                            const codeElement = document.getElementById('generatedAnalysisCode');
+                            codeElement.textContent = result.code;
+                            return;
+                        }
+                    }
+                    aceEditor.setValue(result.code);
+                    aceEditor.clearSelection();
                     
                     document.getElementById('generatedAnalysisSection').classList.remove('hidden');
                     showModalMessage('Code generated successfully!', 'success');
@@ -1209,8 +1287,13 @@
         }
 
         function copyCode() {
-            const codeElement = document.getElementById('generatedAnalysisCode');
-            const code = codeElement.textContent || codeElement.innerText;
+            let code;
+            if (aceEditor) {
+                code = aceEditor.getValue();
+            } else {
+                const codeElement = document.getElementById('generatedAnalysisCode');
+                code = codeElement.textContent || codeElement.innerText;
+            }
             navigator.clipboard.writeText(code).then(() => {
                 showModalMessage('Code copied to clipboard!', 'success');
             }).catch(() => {
@@ -1230,12 +1313,34 @@
         }
 
         function openCodePopup() {
-            const codeElement = document.getElementById('generatedAnalysisCode');
             const popupCodeContent = document.getElementById('popupCodeContent');
             
-            if (codeElement && popupCodeContent) {
-                // Copy the code content to the popup
-                popupCodeContent.textContent = codeElement.textContent || codeElement.innerText;
+            if (popupCodeContent) {
+                // Initialize popup Ace Editor if not already done
+                if (!acePopupEditor) {
+                    try {
+                        initializeAcePopupEditor();
+                    } catch (e) {
+                        console.log('Failed to initialize popup Ace Editor:', e);
+                        // Fallback to text content
+                        const codeElement = document.getElementById('generatedAnalysisCode');
+                        popupCodeContent.textContent = codeElement.textContent || codeElement.innerText;
+                        document.getElementById('codePopupModal').classList.remove('hidden');
+                        return;
+                    }
+                }
+                
+                // Set the code in the popup editor
+                let code;
+                if (aceEditor) {
+                    code = aceEditor.getValue();
+                } else {
+                    const codeElement = document.getElementById('generatedAnalysisCode');
+                    code = codeElement.textContent || codeElement.innerText;
+                }
+                acePopupEditor.setValue(code);
+                acePopupEditor.clearSelection();
+                
                 document.getElementById('codePopupModal').classList.remove('hidden');
             }
         }
@@ -1245,8 +1350,13 @@
         }
 
         function copyCodeFromPopup() {
-            const popupCodeContent = document.getElementById('popupCodeContent');
-            const code = popupCodeContent.textContent || popupCodeContent.innerText;
+            let code;
+            if (acePopupEditor) {
+                code = acePopupEditor.getValue();
+            } else {
+                const popupCodeContent = document.getElementById('popupCodeContent');
+                code = popupCodeContent.textContent || popupCodeContent.innerText;
+            }
             navigator.clipboard.writeText(code).then(() => {
                 showModalMessage('Code copied to clipboard!', 'success');
             }).catch(() => {
@@ -1271,8 +1381,13 @@
 
         async function runAnalysis() {
             const runBtn = document.getElementById('runAnalysisBtn');
-            const codeElement = document.getElementById('generatedAnalysisCode');
-            const code = codeElement.textContent || codeElement.innerText;
+            let code;
+            if (aceEditor) {
+                code = aceEditor.getValue();
+            } else {
+                const codeElement = document.getElementById('generatedAnalysisCode');
+                code = codeElement.textContent || codeElement.innerText;
+            }
             
             if (!code || code.trim() === '') {
                 showModalMessage('No code to run! Generate code first.', 'error');
@@ -1350,39 +1465,8 @@
             }
         }
 
-        function editAnalysisCode() {
-            const codeElement = document.getElementById('generatedAnalysisCode');
-            const currentCode = codeElement.textContent;
-            
-            // Create an editable textarea
-            const textarea = document.createElement('textarea');
-            textarea.value = currentCode;
-            textarea.className = 'w-full h-64 p-4 bg-gray-900 text-green-400 text-sm font-mono border-0 resize-none';
-            textarea.style.fontFamily = 'monospace';
-            
-            // Replace the pre element with textarea
-            codeElement.parentNode.replaceChild(textarea, codeElement);
-            
-            // Add save button
-            const saveBtn = document.createElement('button');
-            saveBtn.textContent = 'Save Changes';
-            saveBtn.className = 'bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors ml-4';
-            saveBtn.onclick = () => {
-                const newCode = textarea.value;
-                const newPre = document.createElement('pre');
-                newPre.id = 'generatedAnalysisCode';
-                newPre.className = 'text-green-400 text-sm overflow-x-auto';
-                newPre.textContent = newCode;
-                
-                textarea.parentNode.replaceChild(newPre, textarea);
-                saveBtn.remove();
-                
-                showModalMessage('Code modified successfully!', 'success');
-            };
-            
-            document.getElementById('generatedAnalysisSection').appendChild(saveBtn);
-            textarea.focus();
-        }
+        // editAnalysisCode function removed - Ace Editor provides built-in editing capabilities
+        // Users can now edit code directly in the Ace Editor without needing a separate edit mode
 
         // Modal tab switching
         function showModalTab(tab) {
