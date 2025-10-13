@@ -21,7 +21,7 @@ spec:
       containerConcurrency: 1
       timeoutSeconds: 60
       containers:
-      - image: gcr.io/PROJECT_ID/analytics-ai-frontend:latest
+      - image: gcr.io/ai-analysis-v1/analytics-ai-frontend:latest
         ports:
         - containerPort: 8080
         env:

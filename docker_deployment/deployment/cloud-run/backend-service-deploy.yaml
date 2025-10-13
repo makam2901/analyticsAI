@@ -21,7 +21,7 @@ spec:
       containerConcurrency: 100
       timeoutSeconds: 300
       containers:
-      - image: gcr.io/PROJECT_ID/analytics-ai-backend:latest
+      - image: gcr.io/ai-analysis-v1/analytics-ai-backend:latest
         ports:
         - containerPort: 8080
         env:
@@ -32,8 +32,8 @@ spec:
           value: "/tmp/analytics_ai.db"
         - name: PYTHONPATH
           value: "/app"
-        - name: PROJECT_ID
-          value: "PROJECT_ID"
+        - name: ai-analysis-v1
+          value: "ai-analysis-v1"
         - name: DEFAULT_BUCKET
           value: "ai-analysis-default-bucket"
         - name: NODE_ENV
