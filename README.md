@@ -1,5 +1,20 @@
 # Analytics AI Platform
 
+## 🚀 Live Demo & Access
+
+Experience the Analytics AI Platform live!
+
+**🌐 Access the Tool:** [https://analytics-ai-frontend-i73iz6e3wq-uc.a.run.app](https://analytics-ai-frontend-i73iz6e3wq-uc.a.run.app)
+
+![Analytics AI Platform Landing Page](image.png)
+
+The platform features a modern, clean interface with:
+- **Intuitive Navigation**: Easy access to Home and Tool sections
+- **Clear Value Proposition**: "Fast-track your data analysis journey"
+- **Feature Highlights**: Direct GCS integration, AI code generation, and smart data aggregation
+- **User-Friendly Design**: Gradient background and professional layout
+- **Call-to-Action**: Prominent "Start Analyzing" button to begin the journey
+
 ## 🎯 Objective
 
 The Analytics AI Platform is a powerful, cloud-native application that democratizes data analysis by enabling users to execute Python code on their datasets through an intuitive web interface. Built with modern cloud technologies, it provides a seamless experience for data scientists, analysts, and researchers to perform complex data operations without the need for local development environments.
