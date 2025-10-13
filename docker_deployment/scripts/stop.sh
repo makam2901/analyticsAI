@@ -1,6 +1,13 @@
 #!/bin/bash
 
+# Get the directory where this script is located
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
+
 echo "🛑 Stopping Analytics AI Platform..."
+
+# Change to project directory
+cd "$PROJECT_DIR"
 
 # Function to clear default bucket contents
 clear_default_bucket() {
@@ -41,7 +48,7 @@ clear_default_bucket() {
 }
 
 # Stop Docker services
-docker-compose down
+cd docker && docker-compose down
 
 # Clear default bucket contents
 clear_default_bucket

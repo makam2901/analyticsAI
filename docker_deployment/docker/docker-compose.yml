@@ -1,18 +1,18 @@
 services:
   analytics-ai-backend:
     build:
-      context: .
-      dockerfile: Dockerfile.backend
+      context: ..
+      dockerfile: docker/Dockerfile.backend
     container_name: analytics-ai-backend
     ports:
       - "8000:8000"
     env_file:
-      - .env
+      - ../config/.env
     environment:
       - DATABASE_PATH=/app/data/analytics_ai.db
       - PYTHONPATH=/app
     volumes:
-      - ./data:/app/data
+      - ../data:/app/data
       - ~/.config/gcloud:/root/.config/gcloud
     restart: unless-stopped
     healthcheck:
@@ -24,8 +24,8 @@ services:
 
   analytics-ai-frontend:
     build:
-      context: .
-      dockerfile: Dockerfile.frontend
+      context: ..
+      dockerfile: docker/Dockerfile.frontend
     container_name: analytics-ai-frontend
     ports:
       - "3000:80"
