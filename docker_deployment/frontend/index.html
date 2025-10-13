@@ -737,7 +737,7 @@
                                             class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors"
                                             onclick="runAnalysis()"
                                         >
-                                            Re-run Code
+                                            Run Code
                                         </button>
                                         <!-- Edit Code button removed - Ace Editor is always editable -->
                                     </div>
@@ -984,7 +984,7 @@
                 try {
                     initializeAceEditor();
                 } catch (e) {
-                    console.log('Main Ace Editor not ready yet, will initialize later');
+                    // Main Ace Editor not ready yet, will initialize later
                 }
             }, 100);
         });
@@ -1170,7 +1170,7 @@
             
             // Get selected files
             const selectedFiles = getSelectedFiles();
-            console.log('Selected files:', selectedFiles); // Debug log
+            // Selected files for analysis
             if (selectedFiles.length === 0) {
                 showModalMessage('Please select at least one data file first!', 'error');
                 return;
@@ -1182,13 +1182,7 @@
             generateBtn.disabled = true;
             
             try {
-                console.log('Making API call with:', { query, language, selectedFiles }); // Debug log
-                console.log('Selected files details:', selectedFiles.map(f => ({
-                    filename: f.filename,
-                    variable_name: f.variable_name,
-                    source: f.source,
-                    bucket: f.bucket
-                }))); // Debug log
+                // Making API call for code generation
                 
                 // Call the code generation API
                 const response = await fetch('http://localhost:8000/api/code/generate-code', {
@@ -1204,10 +1198,7 @@
                     })
                 });
                 
-                console.log('API response status:', response.status); // Debug log
                 const result = await response.json();
-                console.log('API response:', result); // Debug log
-                console.log('Code content:', result.code); // Debug the actual code
                 
                 if (result.success) {
                     // Set the code in Ace Editor
@@ -1215,7 +1206,6 @@
                         try {
                             initializeAceEditor();
                         } catch (e) {
-                            console.log('Failed to initialize Ace Editor:', e);
                             // Fallback to text content
                             const codeElement = document.getElementById('generatedAnalysisCode');
                             codeElement.textContent = result.code;
@@ -1256,12 +1246,12 @@
             // Get all selected files from the data files grid
             const selectedFiles = [];
             const checkboxes = document.querySelectorAll('#dataFilesGrid input[type="checkbox"]:checked');
-            console.log('Found checkboxes:', checkboxes.length); // Debug log
+            // Found checkboxes for selected files
             
             checkboxes.forEach(checkbox => {
                 // Find the parent div (the file card container)
                 const fileCard = checkbox.closest('div.bg-white.border.border-gray-200.rounded-lg');
-                console.log('File card:', fileCard); // Debug log
+                // Processing file card
                 if (fileCard) {
                     // Get file name from the h4 element
                     const fileName = fileCard.querySelector('h4.font-semibold.text-gray-900')?.textContent || 'Unknown file';
@@ -1270,7 +1260,7 @@
                     // Get file type from the span with bg-gray-50
                     const fileType = fileCard.querySelector('div.text-xs.text-gray-500.bg-gray-50')?.textContent || '';
                     
-                    console.log('File details:', { fileName, fileInfo, fileType }); // Debug log
+                    // Processing file details
                     
                     // Get source and bucket information from the file card data attributes
                     const sourceElement = fileCard.querySelector('[data-source]');
@@ -1278,11 +1268,7 @@
                     const bucketElement = fileCard.querySelector('[data-bucket]');
                     const bucket = bucketElement ? bucketElement.getAttribute('data-bucket') : 'ai-analysis-default-bucket';
                     
-                    console.log(`File: ${fileName}, Source: ${source}, Bucket: ${bucket}`);
-                    console.log(`File card data attributes:`, {
-                        dataSource: fileCard.getAttribute('data-source'),
-                        dataBucket: fileCard.getAttribute('data-bucket')
-                    });
+                    // File processed with source and bucket information
                     
                     selectedFiles.push({
                         filename: fileName,
@@ -1297,7 +1283,7 @@
                 }
             });
             
-            console.log('Final selected files:', selectedFiles); // Debug log
+            // Final selected files processed
             return selectedFiles;
         }
 
@@ -1336,7 +1322,6 @@
                     try {
                         initializeAcePopupEditor();
                     } catch (e) {
-                        console.log('Failed to initialize popup Ace Editor:', e);
                         // Fallback to text content
                         const codeElement = document.getElementById('generatedAnalysisCode');
                         popupCodeContent.textContent = codeElement.textContent || codeElement.innerText;
@@ -1415,8 +1400,7 @@
             try {
                 // Get selected files for execution
                 const selectedFiles = getSelectedFiles();
-                console.log('Running code with selected files:', selectedFiles);
-                console.log('Code to execute:', code);
+                // Running code execution
                 
                 // Call the code execution API
                 const response = await fetch('http://localhost:8000/api/code/execute', {
@@ -1432,16 +1416,13 @@
                     })
                 });
                 
-                console.log('API response status:', response.status);
                 const result = await response.json();
-                console.log('API response:', result);
                 
                 if (result.success) {
-                    console.log('Code execution successful, displaying results...');
+                    // Code execution successful, displaying results
                     // Display results table with dynamic data
                     const resultsTable = document.getElementById('analysisResultsTable');
-                    console.log('Results table element:', resultsTable);
-                    console.log('Table HTML to display:', result.table_html);
+                    // Displaying results table
                     
                     resultsTable.innerHTML = result.table_html || 'No results data available';
                     
@@ -1450,7 +1431,7 @@
                     
                     // Show the results section
                     const resultsSection = document.getElementById('analysisResultsSection');
-                    console.log('Results section element:', resultsSection);
+                    // Showing results section
                     resultsSection.classList.remove('hidden');
                     
                     // Auto-scroll to results section after a short delay
@@ -1464,7 +1445,7 @@
                     // Also ensure the Analysis Tables section is expanded so results are visible
                     const analysisTablesContent = document.getElementById('analysis-tables-content');
                     if (analysisTablesContent && analysisTablesContent.classList.contains('hidden')) {
-                        console.log('Analysis Tables section is collapsed, expanding it...');
+                        // Expanding Analysis Tables section
                         analysisTablesContent.classList.remove('hidden');
                         const analysisTablesArrow = document.getElementById('analysis-tables-arrow');
                         if (analysisTablesArrow) {
@@ -1472,11 +1453,11 @@
                         }
                     }
                     
-                    console.log('Results section should now be visible');
+                    // Results section is now visible
                     
                     showModalMessage('Code executed successfully!', 'success');
                 } else {
-                    console.log('Code execution failed:', result.error);
+                    // Code execution failed
                     showModalMessage(`Error executing code: ${result.error || 'Unknown error'}`, 'error');
                 }
             } catch (error) {
@@ -2056,7 +2037,7 @@
                         return;
                     }
                 } catch (error) {
-                    console.log('Could not load combined files, trying default bucket only');
+                    // Could not load combined files, trying default bucket only
                 }
                 
                 // Fallback: Load only default bucket files
@@ -2091,7 +2072,7 @@
                             return;
                         }
                     } catch (error) {
-                        console.log('Could not load sample bucket');
+                        // Could not load sample bucket
                     }
                     
                     // No files found anywhere
@@ -2137,7 +2118,7 @@
             currentFiles = [];
             hideEmptyState();
             showEmptyState();
-            console.log('GCS connection cleared, sessionStorage cleaned');
+            // GCS connection cleared, sessionStorage cleaned
         }
         
         // Function to completely reset the application state
@@ -2158,17 +2139,14 @@
                 dataFilesSection.classList.add('hidden');
             }
             showEmptyState();
-            console.log('Application state completely reset');
+            // Application state completely reset
         }
         
         // Debug function to check storage state
         function debugLocalStorage() {
             const gcsBucketLocal = localStorage.getItem('connectedGCSBucket');
             const gcsBucketSession = sessionStorage.getItem('connectedGCSBucket');
-            console.log('Current localStorage connectedGCSBucket:', gcsBucketLocal);
-            console.log('Current sessionStorage connectedGCSBucket:', gcsBucketSession);
-            console.log('All localStorage keys:', Object.keys(localStorage));
-            console.log('All sessionStorage keys:', Object.keys(sessionStorage));
+            // Debug information available if needed
         }
 
         // Function to initialize clean state

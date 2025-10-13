@@ -194,9 +194,9 @@ async def generate_code(request: CodeGenerationRequest):
         data_loading_code.append("# Loading files from default bucket (ai-analysis-default-bucket)")
         data_loading_code.append("try:")
         data_loading_code.append("    olist_orders_dataset = pd.read_csv('gs://ai-analysis-default-bucket/olist_orders_dataset.csv', storage_options={'token': None})")
-        data_loading_code.append("    print('Loaded olist_orders_dataset from default bucket with shape:', olist_orders_dataset.shape)")
+        data_loading_code.append("    # Loaded olist_orders_dataset from default bucket")
         data_loading_code.append("except Exception as e:")
-        data_loading_code.append("    print('Could not load olist_orders_dataset from default bucket:', str(e))")
+        data_loading_code.append("    # Could not load olist_orders_dataset from default bucket")
         data_loading_code.append("    olist_orders_dataset = None")
         data_loading_code.append("")
         
@@ -221,9 +221,9 @@ async def generate_code(request: CodeGenerationRequest):
         for var_name, filename in sample_files:
             data_loading_code.append(f"try:")
             data_loading_code.append(f"    {var_name} = pd.read_csv('gs://sample-bucket-v2901/{filename}', storage_options={{'token': None}})")
-            data_loading_code.append(f"    print('Loaded {var_name} from sample bucket with shape:', {var_name}.shape)")
+            data_loading_code.append(f"    # Loaded {var_name} from sample bucket")
             data_loading_code.append(f"except Exception as e:")
-            data_loading_code.append(f"    print('Could not load {var_name} from sample bucket:', str(e))")
+            data_loading_code.append(f"    # Could not load {var_name} from sample bucket")
             data_loading_code.append(f"    {var_name} = None")
             data_loading_code.append("")
         
@@ -344,9 +344,9 @@ async def execute_code(request: CodeExecutionRequest):
             data_loading_code.append("# Loading files from default bucket (ai-analysis-default-bucket)")
             data_loading_code.append("try:")
             data_loading_code.append("    olist_orders_dataset = pd.read_csv('gs://ai-analysis-default-bucket/olist_orders_dataset.csv', storage_options={'token': None})")
-            data_loading_code.append("    print('Loaded olist_orders_dataset from default bucket with shape:', olist_orders_dataset.shape)")
+            data_loading_code.append("    # Loaded olist_orders_dataset from default bucket")
             data_loading_code.append("except Exception as e:")
-            data_loading_code.append("    print('Could not load olist_orders_dataset from default bucket:', str(e))")
+            data_loading_code.append("    # Could not load olist_orders_dataset from default bucket")
             data_loading_code.append("    olist_orders_dataset = None")
             data_loading_code.append("")
             
@@ -371,9 +371,9 @@ async def execute_code(request: CodeExecutionRequest):
             for var_name, filename in sample_files:
                 data_loading_code.append(f"try:")
                 data_loading_code.append(f"    {var_name} = pd.read_csv('gs://sample-bucket-v2901/{filename}', storage_options={{'token': None}})")
-                data_loading_code.append(f"    print('Loaded {var_name} from sample bucket with shape:', {var_name}.shape)")
+                data_loading_code.append(f"    # Loaded {var_name} from sample bucket")
                 data_loading_code.append(f"except Exception as e:")
-                data_loading_code.append(f"    print('Could not load {var_name} from sample bucket:', str(e))")
+                data_loading_code.append(f"    # Could not load {var_name} from sample bucket")
                 data_loading_code.append(f"    {var_name} = None")
                 data_loading_code.append("")
             
@@ -414,9 +414,9 @@ async def execute_code(request: CodeExecutionRequest):
             data_loading_code.append("# Loading files from default bucket (ai-analysis-default-bucket)")
             data_loading_code.append("try:")
             data_loading_code.append("    olist_orders_dataset = pd.read_csv('gs://ai-analysis-default-bucket/olist_orders_dataset.csv', storage_options={'token': None})")
-            data_loading_code.append("    print('Loaded olist_orders_dataset from default bucket with shape:', olist_orders_dataset.shape)")
+            data_loading_code.append("    # Loaded olist_orders_dataset from default bucket")
             data_loading_code.append("except Exception as e:")
-            data_loading_code.append("    print('Could not load olist_orders_dataset from default bucket:', str(e))")
+            data_loading_code.append("    # Could not load olist_orders_dataset from default bucket")
             data_loading_code.append("    olist_orders_dataset = None")
             data_loading_code.append("")
             
@@ -441,9 +441,9 @@ async def execute_code(request: CodeExecutionRequest):
             for var_name, filename in sample_files:
                 data_loading_code.append(f"try:")
                 data_loading_code.append(f"    {var_name} = pd.read_csv('gs://sample-bucket-v2901/{filename}', storage_options={{'token': None}})")
-                data_loading_code.append(f"    print('Loaded {var_name} from sample bucket with shape:', {var_name}.shape)")
+                data_loading_code.append(f"    # Loaded {var_name} from sample bucket")
                 data_loading_code.append(f"except Exception as e:")
-                data_loading_code.append(f"    print('Could not load {var_name} from sample bucket:', str(e))")
+                data_loading_code.append(f"    # Could not load {var_name} from sample bucket")
                 data_loading_code.append(f"    {var_name} = None")
                 data_loading_code.append("")
             
@@ -458,9 +458,9 @@ async def execute_code(request: CodeExecutionRequest):
                 data_loading_code.append(f"try:")
                 data_loading_code.append(f"    if {var_name} is not None:")
                 data_loading_code.append(f"        {var_name}.to_sql('{var_name}', conn, if_exists='replace', index=False)")
-                data_loading_code.append(f"        print(f'Loaded {var_name} into SQLite database')")
+                data_loading_code.append(f"        # Loaded {var_name} into SQLite database")
                 data_loading_code.append(f"except Exception as e:")
-                data_loading_code.append(f"    print(f'Could not load {var_name} into SQLite: {{str(e)}}')")
+                data_loading_code.append(f"    # Could not load {var_name} into SQLite")
                 data_loading_code.append("")
             
             # Combine data loading + user's SQL code
