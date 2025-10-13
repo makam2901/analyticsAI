@@ -408,7 +408,8 @@
         <!-- Data Tab Content -->
         <div id="dataContent" class="tab-content min-h-screen bg-gray-50">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                <div class="bg-white rounded-lg shadow-lg p-8">
+                <!-- START OF DATA MANAGEMENT CARD -->
+                <div class="bg-white rounded-lg shadow-lg p-8 mb-8">
                     <div class="flex items-center justify-between mb-8">
                         <div class="flex items-center">
                             <button onclick="toggleDataManagement()" class="flex items-center text-left mr-4">
@@ -418,181 +419,177 @@
                                 </svg>
                             </button>
                         </div>
-                        <div class="flex items-center space-x-4">
-                            <span class="text-sm text-gray-500" id="userStatus">Guest User</span>
-                            <button onclick="logout()" class="text-gray-600 hover:text-blue-600 transition-colors">Logout</button>
-                        </div>
                     </div>
                     <p class="text-gray-600 mb-6">Connect to Google Cloud Storage and manage your data files</p>
 
                     <!-- Collapsible Data Management Content -->
                     <div id="data-management-content" class="hidden">
-                    <!-- Instructions Section -->
-                    <div class="bg-blue-50 border border-blue-200 rounded-lg mb-8">
-                        <div class="p-4">
-                            <button onclick="toggleInstructions()" class="flex items-center justify-between w-full text-left">
-                                <div class="flex items-center">
-                                    <svg class="w-5 h-5 text-blue-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                    </svg>
-                                    <h3 class="text-lg font-semibold text-blue-900">What to do next?</h3>
-                                </div>
-                                <svg id="instructions-arrow" class="w-5 h-5 text-blue-600 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                                </svg>
-                            </button>
-                            <div id="instructions-content" class="mt-4 space-y-3 text-gray-700 hidden">
-                                <div class="flex items-start">
-                                    <span class="inline-block w-6 h-6 bg-blue-600 text-white text-sm font-bold rounded-full flex items-center justify-center mr-3 mt-0.5">1</span>
-                                    <div>
-                                        <p class="font-medium">Connect your data sources:</p>
-                                        <p class="text-sm">Use <strong>GCS Connect</strong> to connect your external Google Cloud Storage bucket, or <strong>Upload Files</strong> to add files manually.</p>
+                        <!-- Instructions Section -->
+                        <div class="bg-blue-50 border border-blue-200 rounded-lg mb-8">
+                            <div class="p-4">
+                                <button onclick="toggleInstructions()" class="flex items-center justify-between w-full text-left">
+                                    <div class="flex items-center">
+                                        <svg class="w-5 h-5 text-blue-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                        <h3 class="text-lg font-semibold text-blue-900">What to do next?</h3>
                                     </div>
-                                </div>
-                                <div class="flex items-start">
-                                    <span class="inline-block w-6 h-6 bg-blue-600 text-white text-sm font-bold rounded-full flex items-center justify-center mr-3 mt-0.5">2</span>
-                                    <div>
-                                        <p class="font-medium">Select your data:</p>
-                                        <p class="text-sm">Use the <strong>include checkboxes</strong> to choose which files to include in analysis, or use <strong>Select All</strong> to use all available data.</p>
-                                    </div>
-                                </div>
-                                <div class="flex items-start">
-                                    <span class="inline-block w-6 h-6 bg-blue-600 text-white text-sm font-bold rounded-full flex items-center justify-center mr-3 mt-0.5">3</span>
-                                    <div>
-                                        <p class="font-medium">Start your analysis:</p>
-                                        <p class="text-sm">Your data is ready for analysis with AI-powered insights.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- GCS Connection Section -->
-                    <div class="bg-white border border-gray-200 rounded-lg shadow-lg mb-8">
-                        <div class="p-4">
-                            <div class="flex items-center justify-between mb-4">
-                                <button onclick="toggleConnectionSection()" class="flex items-center text-left">
-                                    <h3 class="text-xl font-bold text-gray-900">Connect to Data Source</h3>
-                                    <svg id="connection-arrow" class="w-5 h-5 text-blue-600 transform transition-transform duration-200 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg id="instructions-arrow" class="w-5 h-5 text-blue-600 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                                     </svg>
                                 </button>
-                                <div class="flex items-center space-x-3">
-                                    <button onclick="loadFiles()" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors text-sm">
-                                        Load Files
-                                    </button>
-                                    <button onclick="clearGCSConnection()" class="bg-gray-500 text-white px-3 py-2 rounded-lg hover:bg-gray-600 transition-colors text-sm">
-                                        Clear
-                                    </button>
-                                </div>
-                            </div>
-                            
-                            <!-- Connection Options -->
-                            <div id="connection-content" class="mt-6">
-                                <div class="grid md:grid-cols-2 gap-4">
-                                    <!-- Option 1: Connect to Bucket -->
-                                    <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
-                                        <div class="flex items-center mb-3">
-                                            <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-3">
-                                                <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"></path>
-                                                </svg>
-                                            </div>
-                                            <div>
-                                                <h4 class="text-base font-semibold text-gray-900">Connect to GCS Bucket</h4>
-                                                <p class="text-xs text-gray-600">Access existing data from Google Cloud Storage</p>
-                                            </div>
-                                        </div>
-                                        <div class="space-y-3">
-                                            <div>
-                                                <label class="block text-sm font-medium text-gray-700 mb-1">Bucket URL</label>
-                                                <input type="text" id="bucketUrl" value="gs://sample-bucket-v2901" placeholder="gs://your-bucket-name" 
-                                                       class="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent text-sm">
-                                            </div>
-                                            <button onclick="connectExistingBucket()" class="w-full bg-blue-600 text-white px-3 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium text-sm">
-                                                Connect to Bucket
-                                            </button>
+                                <div id="instructions-content" class="mt-4 space-y-3 text-gray-700 hidden">
+                                    <div class="flex items-start">
+                                        <span class="inline-block w-6 h-6 bg-blue-600 text-white text-sm font-bold rounded-full flex items-center justify-center mr-3 mt-0.5">1</span>
+                                        <div>
+                                            <p class="font-medium">Connect your data sources:</p>
+                                            <p class="text-sm">Use <strong>GCS Connect</strong> to connect your external Google Cloud Storage bucket, or <strong>Upload Files</strong> to add files manually.</p>
                                         </div>
                                     </div>
-
-                                    <!-- Option 2: Upload Files -->
-                                    <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
-                                        <div class="flex items-center mb-3">
-                                            <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mr-3">
-                                                <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
-                                                </svg>
-                                            </div>
-                                            <div>
-                                                <h4 class="text-base font-semibold text-gray-900">Upload Your Files</h4>
-                                                <p class="text-xs text-gray-600">Access data from local storage</p>
-                                            </div>
+                                    <div class="flex items-start">
+                                        <span class="inline-block w-6 h-6 bg-blue-600 text-white text-sm font-bold rounded-full flex items-center justify-center mr-3 mt-0.5">2</span>
+                                        <div>
+                                            <p class="font-medium">Select your data:</p>
+                                            <p class="text-sm">Use the <strong>include checkboxes</strong> to choose which files to include in analysis, or use <strong>Select All</strong> to use all available data.</p>
                                         </div>
-                                        <div class="space-y-3">
-                                            <div>
-                                                <label class="block text-sm font-medium text-gray-700 mb-1">Supported formats</label>
-                                                <div class="text-center py-1.5 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
-                                                    <div class="flex flex-wrap justify-center gap-1">
-                                                        <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full font-medium">CSV</span>
-                                                        <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full font-medium">JSON</span>
-                                                        <span class="px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded-full font-medium">Excel</span>
-                                                        <span class="px-2 py-1 bg-orange-100 text-orange-800 text-xs rounded-full font-medium">Parquet</span>
-                                                    </div>
+                                    </div>
+                                    <div class="flex items-start">
+                                        <span class="inline-block w-6 h-6 bg-blue-600 text-white text-sm font-bold rounded-full flex items-center justify-center mr-3 mt-0.5">3</span>
+                                        <div>
+                                            <p class="font-medium">Start your analysis:</p>
+                                            <p class="text-sm">Your data is ready for analysis with AI-powered insights.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- GCS Connection Section -->
+                        <div class="bg-white border border-gray-200 rounded-lg shadow-lg mb-8">
+                            <div class="p-4">
+                                <div class="flex items-center justify-between mb-4">
+                                    <button onclick="toggleConnectionSection()" class="flex items-center text-left">
+                                        <h3 class="text-xl font-bold text-gray-900">Connect to Data Source</h3>
+                                        <svg id="connection-arrow" class="w-5 h-5 text-blue-600 transform transition-transform duration-200 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                        </svg>
+                                    </button>
+                                    <div class="flex items-center space-x-3">
+                                        <button onclick="loadFiles()" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors text-sm">
+                                            Load Files
+                                        </button>
+                                        <button onclick="clearGCSConnection()" class="bg-gray-500 text-white px-3 py-2 rounded-lg hover:bg-gray-600 transition-colors text-sm">
+                                            Clear
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <!-- Connection Options -->
+                                <div id="connection-content" class="mt-6">
+                                    <div class="grid md:grid-cols-2 gap-4">
+                                        <!-- Option 1: Connect to Bucket -->
+                                        <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                                            <div class="flex items-center mb-3">
+                                                <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+                                                    <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"></path>
+                                                    </svg>
+                                                </div>
+                                                <div>
+                                                    <h4 class="text-base font-semibold text-gray-900">Connect to GCS Bucket</h4>
+                                                    <p class="text-xs text-gray-600">Access existing data from Google Cloud Storage</p>
                                                 </div>
                                             </div>
-                                            <button onclick="uploadFiles()" class="w-full bg-green-600 text-white px-3 py-2 rounded-lg hover:bg-green-700 transition-colors font-medium text-sm">
-                                                Choose Files to Upload
-                                            </button>
+                                            <div class="space-y-3">
+                                                <div>
+                                                    <label class="block text-sm font-medium text-gray-700 mb-1">Bucket URL</label>
+                                                    <input type="text" id="bucketUrl" value="gs://sample-bucket-v2901" placeholder="gs://your-bucket-name" 
+                                                            class="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent text-sm">
+                                                </div>
+                                                <button onclick="connectExistingBucket()" class="w-full bg-blue-600 text-white px-3 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium text-sm">
+                                                    Connect to Bucket
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <!-- Option 2: Upload Files -->
+                                        <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                                            <div class="flex items-center mb-3">
+                                                <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mr-3">
+                                                    <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                                                    </svg>
+                                                </div>
+                                                <div>
+                                                    <h4 class="text-base font-semibold text-gray-900">Upload Your Files</h4>
+                                                    <p class="text-xs text-gray-600">Access data from local storage</p>
+                                                </div>
+                                            </div>
+                                            <div class="space-y-3">
+                                                <div>
+                                                    <label class="block text-sm font-medium text-gray-700 mb-1">Supported formats</label>
+                                                    <div class="text-center py-1.5 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
+                                                        <div class="flex flex-wrap justify-center gap-1">
+                                                            <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full font-medium">CSV</span>
+                                                            <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full font-medium">JSON</span>
+                                                            <span class="px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded-full font-medium">Excel</span>
+                                                            <span class="px-2 py-1 bg-orange-100 text-orange-800 text-xs rounded-full font-medium">Parquet</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <button onclick="uploadFiles()" class="w-full bg-green-600 text-white px-3 py-2 rounded-lg hover:bg-green-700 transition-colors font-medium text-sm">
+                                                    Choose Files to Upload
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
+                                    </div>
                                 </div>
+                            </div>
+                        </div>
+
+                        <!-- Data Files Display -->
+                        <div id="dataFilesSection" class="hidden">
+                            <div class="flex items-center justify-between mb-6">
+                                <h3 class="text-xl font-bold text-gray-900">Data Files</h3>
+                                <div class="flex items-center space-x-4">
+                                    <span id="bucketInfo" class="text-sm text-gray-600"></span>
+                                    <button onclick="refreshFiles()" class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors text-sm">
+                                        Refresh
+                                    </button>
                                 </div>
                             </div>
-                        </div>
-                    </div>
 
-                    <!-- Data Files Display -->
-                    <div id="dataFilesSection" class="hidden">
-                        <div class="flex items-center justify-between mb-6">
-                            <h3 class="text-xl font-bold text-gray-900">Data Files</h3>
-                            <div class="flex items-center space-x-4">
-                                <span id="bucketInfo" class="text-sm text-gray-600"></span>
-                                <button onclick="refreshFiles()" class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors text-sm">
-                                    Refresh
-                                </button>
+                            <!-- Files Grid -->
+                            <div id="dataFilesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                                <!-- Data cards will be dynamically inserted here -->
                             </div>
                         </div>
 
-                        <!-- Files Grid -->
-                        <div id="dataFilesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                            <!-- Data cards will be dynamically inserted here -->
-                            </div>
+                        <!-- Loading State -->
+                        <div id="loadingState" class="text-center py-12 hidden">
+                            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+                            <p class="text-gray-600">Loading data files...</p>
                         </div>
 
-                    <!-- Loading State -->
-                    <div id="loadingState" class="text-center py-12 hidden">
-                        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-                        <p class="text-gray-600">Loading data files...</p>
-                    </div>
-
-                    <!-- Empty State -->
-                    <div id="emptyState" class="text-center py-12 hidden">
-                        <div class="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                            </svg>
+                        <!-- Empty State -->
+                        <div id="emptyState" class="text-center py-12 hidden">
+                            <div class="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
                             </div>
-                        <h3 class="text-lg font-medium text-gray-900 mb-2">No data files found</h3>
-                        <p class="text-gray-600 mb-4">Connect to a public GCS bucket or upload your own files to get started</p>
-                    </div>
-                            </div>
+                            <h3 class="text-lg font-medium text-gray-900 mb-2">No data files found</h3>
+                            <p class="text-gray-600 mb-4">Connect to a public GCS bucket or upload your own files to get started</p>
                         </div>
-                    </div>
                     </div> <!-- End of collapsible data management content -->
+                </div>
+                <!-- END OF DATA MANAGEMENT CARD -->
 
-                    <!-- Analysis Tables Section -->
-                    <div class="mt-8">
-                        <div class="flex items-center mb-6">
+                <!-- START OF ANALYSIS TABLES CARD -->
+                <div class="bg-white rounded-lg shadow-lg p-8 mb-8">
+                    <div class="flex items-center justify-between mb-8">
+                        <div class="flex items-center">
                             <button onclick="toggleAnalysisTables()" class="flex items-center text-left mr-4">
                                 <h2 class="text-3xl font-bold text-gray-900 mb-2">Analysis Tables</h2>
                                 <svg id="analysis-tables-arrow" class="w-6 h-6 text-blue-600 transform transition-transform duration-200 ml-3 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -600,10 +597,11 @@
                                 </svg>
                             </button>
                         </div>
-                        <p class="text-gray-600 mb-6">Generate analysis tables from your data using natural language queries</p>
+                    </div>
+                    <p class="text-gray-600 mb-6">Generate analysis tables from your data using natural language queries</p>
 
-                        <!-- Collapsible Analysis Tables Content -->
-                        <div id="analysis-tables-content">
+                    <!-- Collapsible Analysis Tables Content -->
+                    <div id="analysis-tables-content" class="hidden">
                         <!-- Instructions Section -->
                         <div class="bg-blue-50 border border-blue-200 rounded-lg mb-8">
                             <div class="p-4">
@@ -690,41 +688,48 @@
                             </div>
                         </div>
 
-                        <!-- Generated Code Section -->
-                        <div id="generatedAnalysisSection" class="bg-white border border-gray-200 rounded-lg shadow-lg mb-8 hidden">
-                            <div class="p-6">
-                                <h3 class="text-xl font-bold text-gray-900 mb-4">Generated Code</h3>
-                                <div class="bg-gray-900 rounded-lg p-4 mb-4">
-                                    <pre id="generatedAnalysisCode" class="text-green-400 text-sm overflow-x-auto"></pre>
+                        <!-- Two-column layout for Code and Results -->
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                            <!-- Generated Code Section -->
+                            <div id="generatedAnalysisSection" class="bg-white border border-gray-200 rounded-lg shadow-lg hidden">
+                                <div class="p-6">
+                                    <h3 class="text-xl font-bold text-gray-900 mb-4">Generated Code</h3>
+                                    <div class="bg-gray-900 rounded-lg p-4 mb-4">
+                                        <pre id="generatedAnalysisCode" class="text-green-400 text-sm overflow-x-auto"></pre>
+                                    </div>
+                                    <div class="flex space-x-4">
+                                        <button 
+                                            id="runAnalysisBtn"
+                                            class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors"
+                                            onclick="runAnalysis()"
+                                        >
+                                            Run Code
+                                        </button>
+                                        <button 
+                                            id="modifyAnalysisBtn"
+                                            class="bg-yellow-600 text-white px-4 py-2 rounded-lg hover:bg-yellow-700 transition-colors"
+                                            onclick="editAnalysisCode()"
+                                        >
+                                            Modify Code
+                                        </button>
+                                    </div>
                                 </div>
-                                <div class="flex space-x-4">
-                                    <button 
-                                        id="runAnalysisBtn"
-                                        class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors"
-                                        onclick="runAnalysis()"
-                                    >
-                                        Run Code
-                                    </button>
-                                    <button 
-                                        id="modifyAnalysisBtn"
-                                        class="bg-yellow-600 text-white px-4 py-2 rounded-lg hover:bg-yellow-700 transition-colors"
-                                        onclick="editAnalysisCode()"
-                                    >
-                                        Modify Code
-                                    </button>
+                            </div>
+
+                            <!-- Results Section -->
+                            <div id="analysisResultsSection" class="bg-white border border-gray-200 rounded-lg shadow-lg hidden">
+                                <div class="p-6">
+                                    <h3 class="text-xl font-bold text-gray-900 mb-4">Analysis Results</h3>
+                                    <div id="analysisResultsTable" class="overflow-x-auto"></div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Results Section -->
-                        <div id="analysisResultsSection" class="bg-white border border-gray-200 rounded-lg shadow-lg hidden">
-                            <div class="p-6">
-                                <h3 class="text-xl font-bold text-gray-900 mb-4">Analysis Results</h3>
-                                <div id="analysisResultsTable" class="overflow-x-auto"></div>
-                            </div>
-                        </div>
-                        </div> <!-- End of collapsible analysis tables content -->
-                    </div> <!-- End of Analysis Tables Section -->
+                    </div> <!-- End of collapsible analysis tables content -->
+                </div>
+                <!-- END OF ANALYSIS TABLES CARD -->
+            </div>
+        </div> <!-- End of dataContent -->
 
         <!-- File Preview Modal -->
         <div id="filePreviewModal" class="fixed inset-0 bg-black bg-opacity-50 modal-backdrop z-50 hidden">
@@ -741,14 +746,14 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                             </svg>
                             </button>
-                        </div>
+                    </div>
 
                     <!-- Modal Content -->
                     <div class="p-6 flex-1 overflow-hidden">
                         <div id="previewContent" class="h-full overflow-auto custom-scrollbar">
                             <!-- Preview content will be inserted here -->
+                        </div>
                     </div>
-                </div>
 
                     <!-- Modal Footer -->
                     <div class="flex items-center justify-between p-6 border-t border-gray-200">
@@ -901,20 +906,6 @@
                 top: 0,
                 behavior: 'smooth'
             });
-            
-            // Enable/disable top right navigation buttons based on current tab
-            const topRightButtons = document.querySelectorAll('nav .flex.items-center.space-x-4 button');
-            topRightButtons.forEach(button => {
-                if (tabName === 'home') {
-                    button.disabled = false;
-                    button.classList.remove('opacity-50', 'cursor-not-allowed');
-                    button.classList.add('hover:text-blue-600');
-                } else {
-                    button.disabled = true;
-                    button.classList.add('opacity-50', 'cursor-not-allowed');
-                    button.classList.remove('hover:text-blue-600');
-                }
-            });
         }
 
         // Toggle instructions section
@@ -999,14 +990,6 @@
                 arrow.style.transform = 'rotate(0deg)';
             }
         }
-
-        // Initialize Analysis Tables arrow to expanded state
-        document.addEventListener('DOMContentLoaded', function() {
-            const analysisArrow = document.getElementById('analysis-tables-arrow');
-            if (analysisArrow) {
-                analysisArrow.style.transform = 'rotate(180deg)';
-            }
-        });
 
         function toggleAnalysisInstructions() {
             const content = document.getElementById('analysis-instructions-content');
@@ -1297,7 +1280,6 @@
         // Update UI based on auth status
         function updateUserInterface() {
             const dataTab = document.querySelector('[data-tab="data"]');
-            const userStatus = document.getElementById('userStatus');
             
             if (authToken || isGuestUser) {
                 // User is authenticated
@@ -1305,18 +1287,11 @@
                 logoutBtn.classList.remove('hidden');
                 dataTab.classList.remove('hidden');
                 
-                if (userStatus) {
-                    userStatus.textContent = isGuestUser ? 'Guest User' : `Welcome, ${currentUser?.name || 'User'}`;
-                }
             } else {
                 // User is not authenticated
                 getStartedBtn.classList.remove('hidden');
                 logoutBtn.classList.add('hidden');
                 dataTab.classList.add('hidden');
-                
-                if (userStatus) {
-                    userStatus.textContent = 'Guest User';
-                }
             }
         }
 
@@ -2118,6 +2093,8 @@
         }
 
         async function deleteFile(fileName) {
+            // NOTE: Using a custom modal for confirmation would be better than window.confirm
+            // but for this example, confirm is used for simplicity.
             if (!confirm(`Are you sure you want to delete "${fileName}"? This action cannot be undone.`)) {
                 return;
             }
@@ -2261,3 +2238,4 @@
     </script>
 </body>
 </html>
+
