@@ -38,6 +38,8 @@ spec:
           value: "ai-analysis-default-bucket"
         - name: NODE_ENV
           value: "production"
+        - name: FRONTEND_URL
+          value: "https://analytics-ai-frontend-i73iz6e3wq-uc.a.run.app"
         # API Keys (use Secret Manager)
         - name: GEMINI_API_KEY
           valueFrom:

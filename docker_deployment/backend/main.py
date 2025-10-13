@@ -42,9 +42,19 @@ app = FastAPI(
 )
 
 # CORS middleware
+origins = [
+    "http://localhost:3000",
+    "http://localhost:8080", 
+    "http://localhost",
+    "https://analytics-ai-frontend-i73iz6e3wq-uc.a.run.app",
+    os.getenv('FRONTEND_URL', 'http://localhost:3000')
+]
+# Remove duplicates while preserving order
+origins = list(dict.fromkeys(origins))
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[os.getenv('FRONTEND_URL', 'http://localhost:3000')],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
