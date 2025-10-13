@@ -561,7 +561,3 @@ For support, questions, or contributions:
 - **Community**: Join our community discussions
 
 ---
-
-**Built with ❤️ using modern cloud technologies**
-
-*Last updated: $(date)*
