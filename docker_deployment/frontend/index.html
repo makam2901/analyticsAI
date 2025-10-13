@@ -11,6 +11,15 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.23.4/mode-python.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.23.4/theme-monokai.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.23.4/theme-github.min.js" type="text/javascript" charset="utf-8"></script>
+    <script>
+        // Backend URL configuration
+        window.BACKEND_URL = '${BACKEND_URL}' || 'http://localhost:8000';
+        
+        // Helper function to get API URL
+        function getApiUrl(endpoint) {
+            return window.BACKEND_URL + endpoint;
+        }
+    </script>
     <style>
         body { font-family: 'Inter', sans-serif; }
         .spinner { animation: spin 1s linear infinite; }
@@ -1185,7 +1194,7 @@
                 // Making API call for code generation
                 
                 // Call the code generation API
-                const response = await fetch('http://localhost:8000/api/code/generate-code', {
+                const response = await fetch(getApiUrl('/api/code/generate-code'), {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -1403,7 +1412,7 @@
                 // Running code execution
                 
                 // Call the code execution API
-                const response = await fetch('http://localhost:8000/api/code/execute', {
+                const response = await fetch(getApiUrl('/api/code/execute'), {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -1576,7 +1585,7 @@
         // Authentication functions
         async function login(username, password) {
             try {
-                const response = await apiCall('http://localhost:8000/api/auth/login', {
+                const response = await apiCall(getApiUrl('/api/auth/login'), {
                     method: 'POST',
                     body: JSON.stringify({ username, password })
                 });
@@ -1586,7 +1595,7 @@
                 isGuestUser = false;
 
                 // Get user info
-                const userInfo = await apiCall('http://localhost:8000/api/auth/verify');
+                const userInfo = await apiCall(getApiUrl('/api/auth/verify'));
                 currentUser = userInfo;
 
                 closeAuthModal();
@@ -1610,7 +1619,7 @@
                 isGuestUser = false;
 
                 // Get user info
-                const userInfo = await apiCall('http://localhost:8000/api/auth/verify');
+                const userInfo = await apiCall(getApiUrl('/api/auth/verify'));
                 currentUser = userInfo;
 
                 closeAuthModal();
@@ -2557,7 +2566,7 @@
         async function checkAuthStatus() {
             if (authToken) {
                 try {
-                    const userInfo = await apiCall('http://localhost:8000/api/auth/verify');
+                    const userInfo = await apiCall(getApiUrl('/api/auth/verify'));
                     currentUser = userInfo;
                     isGuestUser = false;
                 } catch (error) {

@@ -38,17 +38,43 @@ gcloud services enable \
 # Build and push Docker images
 echo "🔨 Building and pushing Docker images..."
 
-# Build backend image
-echo "Building backend image..."
-gcloud builds submit --tag gcr.io/$PROJECT_ID/analytics-ai-backend ./docker --file ./docker/Dockerfile.backend
+# Generate timestamp for unique tags
+TIMESTAMP=$(date +%Y%m%d-%H%M%S)
 
-# Build frontend image  
+# Build and push backend image
+echo "Building backend image..."
+docker buildx build --platform linux/amd64 --load --no-cache -f docker/Dockerfile.backend -t gcr.io/$PROJECT_ID/analytics-ai-backend:$TIMESTAMP .
+docker tag gcr.io/$PROJECT_ID/analytics-ai-backend:$TIMESTAMP gcr.io/$PROJECT_ID/analytics-ai-backend:latest
+docker push gcr.io/$PROJECT_ID/analytics-ai-backend:$TIMESTAMP
+docker push gcr.io/$PROJECT_ID/analytics-ai-backend:latest
+
+# Build and push frontend image (will be updated with backend URL after backend deployment)
 echo "Building frontend image..."
-gcloud builds submit --tag gcr.io/$PROJECT_ID/analytics-ai-frontend ./docker --file ./docker/Dockerfile.frontend
+docker buildx build --platform linux/amd64 --load --no-cache -f docker/Dockerfile.frontend --build-arg BACKEND_URL=http://localhost:8000 -t gcr.io/$PROJECT_ID/analytics-ai-frontend:$TIMESTAMP .
+docker tag gcr.io/$PROJECT_ID/analytics-ai-frontend:$TIMESTAMP gcr.io/$PROJECT_ID/analytics-ai-frontend:latest
+docker push gcr.io/$PROJECT_ID/analytics-ai-frontend:$TIMESTAMP
+docker push gcr.io/$PROJECT_ID/analytics-ai-frontend:latest
 
 # Create secrets (if they don't exist)
 echo "🔐 Setting up secrets..."
 ./deployment/scripts/create-secrets.sh
+
+# Grant Cloud Run service account access to secrets
+echo "🔐 Setting up IAM permissions for secrets..."
+SERVICE_ACCOUNT="${PROJECT_ID}-compute@developer.gserviceaccount.com"
+
+# Grant Secret Manager Secret Accessor role to the default compute service account
+gcloud secrets add-iam-policy-binding gemini-api-key \
+    --member="serviceAccount:${SERVICE_ACCOUNT}" \
+    --role="roles/secretmanager.secretAccessor" \
+    --project=$PROJECT_ID
+
+gcloud secrets add-iam-policy-binding jwt-secret \
+    --member="serviceAccount:${SERVICE_ACCOUNT}" \
+    --role="roles/secretmanager.secretAccessor" \
+    --project=$PROJECT_ID
+
+echo "✅ IAM permissions configured"
 
 # Deploy backend service
 echo "🚀 Deploying backend service..."
@@ -60,12 +86,24 @@ gcloud run deploy analytics-ai-backend \
     --memory 4Gi \
     --cpu 2 \
     --max-instances 10 \
-    --set-env-vars "DATABASE_PATH=/tmp/analytics_ai.db,PYTHONPATH=/app,PROJECT_ID=$PROJECT_ID,DEFAULT_BUCKET=ai-analysis-default-bucket,NODE_ENV=production,PORT=8000" \
+        --set-env-vars "DATABASE_PATH=/tmp/analytics_ai.db,PYTHONPATH=/app,PROJECT_ID=$PROJECT_ID,DEFAULT_BUCKET=ai-analysis-default-bucket,NODE_ENV=production" \
     --set-secrets "GEMINI_API_KEY=gemini-api-key:latest,JWT_SECRET=jwt-secret:latest"
+
+# Wait for backend deployment to complete
+echo "⏳ Waiting for backend deployment to complete..."
+sleep 30
 
 # Get backend URL
 BACKEND_URL=$(gcloud run services describe analytics-ai-backend --platform managed --region $REGION --format 'value(status.url)')
 echo "Backend URL: $BACKEND_URL"
+
+# Rebuild frontend image with correct backend URL
+echo "🔄 Rebuilding frontend with correct backend URL..."
+NEW_TIMESTAMP=$(date +%Y%m%d-%H%M%S)
+docker buildx build --platform linux/amd64 --load --no-cache -f docker/Dockerfile.frontend --build-arg BACKEND_URL=$BACKEND_URL -t gcr.io/$PROJECT_ID/analytics-ai-frontend:$NEW_TIMESTAMP .
+docker tag gcr.io/$PROJECT_ID/analytics-ai-frontend:$NEW_TIMESTAMP gcr.io/$PROJECT_ID/analytics-ai-frontend:latest
+docker push gcr.io/$PROJECT_ID/analytics-ai-frontend:$NEW_TIMESTAMP
+docker push gcr.io/$PROJECT_ID/analytics-ai-frontend:latest
 
 # Deploy frontend service
 echo "🚀 Deploying frontend service..."
@@ -76,8 +114,7 @@ gcloud run deploy analytics-ai-frontend \
     --allow-unauthenticated \
     --memory 1Gi \
     --cpu 1 \
-    --max-instances 10 \
-    --set-env-vars "BACKEND_URL=$BACKEND_URL"
+    --max-instances 10
 
 # Get frontend URL
 FRONTEND_URL=$(gcloud run services describe analytics-ai-frontend --platform managed --region $REGION --format 'value(status.url)')

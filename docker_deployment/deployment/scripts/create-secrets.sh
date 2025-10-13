@@ -24,8 +24,12 @@ gcloud services enable secretmanager.googleapis.com --project=$PROJECT_ID
 # Create GEMINI_API_KEY secret
 echo "🔐 Creating GEMINI_API_KEY secret..."
 if ! gcloud secrets describe gemini-api-key --project=$PROJECT_ID >/dev/null 2>&1; then
-    echo "Please enter your GEMINI_API_KEY:"
-    read -s GEMINI_API_KEY
+    if [ -z "$GEMINI_API_KEY" ]; then
+        echo "Please enter your GEMINI_API_KEY:"
+        read -s GEMINI_API_KEY
+    else
+        echo "✅ Using provided GEMINI_API_KEY"
+    fi
     echo -n "$GEMINI_API_KEY" | gcloud secrets create gemini-api-key \
         --data-file=- \
         --project=$PROJECT_ID
@@ -37,12 +41,16 @@ fi
 # Create JWT_SECRET
 echo "🔐 Creating JWT_SECRET..."
 if ! gcloud secrets describe jwt-secret --project=$PROJECT_ID >/dev/null 2>&1; then
-    # Generate a random JWT secret
-    JWT_SECRET=$(openssl rand -base64 32)
+    if [ -z "$JWT_SECRET" ]; then
+        # Generate a random JWT secret
+        JWT_SECRET=$(openssl rand -base64 32 2>/dev/null || echo "analytics_ai_jwt_secret_$(date +%s)")
+    else
+        echo "✅ Using provided JWT_SECRET"
+    fi
     echo -n "$JWT_SECRET" | gcloud secrets create jwt-secret \
         --data-file=- \
         --project=$PROJECT_ID
-    echo "✅ JWT_SECRET created with random value"
+    echo "✅ JWT_SECRET created"
 else
     echo "⚠️  JWT_SECRET already exists"
 fi

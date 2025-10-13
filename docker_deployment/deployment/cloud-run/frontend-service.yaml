@@ -20,7 +20,7 @@ spec:
         image: gcr.io/PROJECT_ID/analytics-ai-frontend:latest
         ports:
         - name: http1
-          containerPort: 80
+          containerPort: 8080
         env:
         - name: BACKEND_URL
           value: "https://analytics-ai-backend-xxxxxxxxx-uc.a.run.app"
