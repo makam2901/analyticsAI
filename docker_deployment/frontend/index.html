@@ -1609,7 +1609,7 @@
 
         async function register(name, username, password) {
             try {
-                const response = await apiCall('http://localhost:8000/api/auth/register', {
+                const response = await apiCall(getApiUrl('/api/auth/register'), {
                     method: 'POST',
                     body: JSON.stringify({ name, username, password })
                 });
@@ -1695,7 +1695,7 @@
             showLoadingState();
             try {
                 // Always get combined files (public bucket + default bucket) for portfolio demo
-                const url = `http://localhost:8000/api/data/combined-files?public_bucket=${bucketName}`;
+                const url = getApiUrl(`/api/data/combined-files?public_bucket=${bucketName}`);
                 const files = await apiCall(url);
                 currentFiles = files;
                 
@@ -1876,7 +1876,7 @@
             `;
             
             try {
-                const preview = await apiCall(`http://localhost:8000/api/data/bucket/${bucketName}/file/${fileName}/preview`);
+                const preview = await apiCall(getApiUrl(`/api/data/bucket/${bucketName}/file/${fileName}/preview`));
                 
                 if (preview.type === 'csv' || preview.type === 'json') {
                     // Use structured data from backend
@@ -2031,7 +2031,7 @@
                 
                 // Try to load combined files (uploaded + sample bucket)
                 try {
-                    const combinedFiles = await apiCall(`http://localhost:8000/api/data/combined-files?public_bucket=${sampleBucket}`);
+                    const combinedFiles = await apiCall(getApiUrl(`/api/data/combined-files?public_bucket=${sampleBucket}`));
                     currentFiles = combinedFiles;
                     
                     if (combinedFiles.length > 0) {
@@ -2050,7 +2050,7 @@
                 }
                 
                 // Fallback: Load only default bucket files
-                const defaultFiles = await apiCall('http://localhost:8000/api/data/default-bucket/files');
+                const defaultFiles = await apiCall(getApiUrl('/api/data/default-bucket/files'));
                 
                 if (defaultFiles.length > 0) {
                     currentFiles = defaultFiles.map(file => ({
@@ -2063,7 +2063,7 @@
                 } else {
                     // No files in default bucket, try sample bucket only
                     try {
-                        const gcsFiles = await apiCall(`http://localhost:8000/api/data/bucket/${sampleBucket}/files`);
+                        const gcsFiles = await apiCall(getApiUrl(`/api/data/bucket/${sampleBucket}/files`));
                         if (gcsFiles.length > 0) {
                             currentBucket = { 
                                 name: sampleBucket, 
@@ -2106,10 +2106,10 @@
                 // Check if we have a previously connected GCS bucket
                 const previouslyConnectedBucket = sessionStorage.getItem('connectedGCSBucket');
                 const url = previouslyConnectedBucket && previouslyConnectedBucket !== 'ai-analysis-default-bucket'
-                    ? `http://localhost:8000/api/data/combined-files?public_bucket=${previouslyConnectedBucket}`
+                    ? getApiUrl(`/api/data/combined-files?public_bucket=${previouslyConnectedBucket}`)
                     : currentBucket.name === 'ai-analysis-default-bucket' 
-                        ? 'http://localhost:8000/api/data/combined-files'
-                        : `http://localhost:8000/api/data/combined-files?public_bucket=${currentBucket.name}`;
+                        ? getApiUrl('/api/data/combined-files')
+                        : getApiUrl(`/api/data/combined-files?public_bucket=${currentBucket.name}`);
                 
                 const files = await apiCall(url);
                 currentFiles = files;
@@ -2214,7 +2214,7 @@
                     formData.append('file', file);
                     
                     try {
-                        const response = await fetch(`http://localhost:8000/api/data/default-bucket/upload`, {
+                        const response = await fetch(getApiUrl(`/api/data/default-bucket/upload`), {
                             method: 'POST',
                             body: formData,
                             headers: {
@@ -2265,10 +2265,10 @@
                         
                         if (previouslyConnectedBucket && previouslyConnectedBucket !== 'ai-analysis-default-bucket') {
                             // Get combined files (uploaded + GCS) - this ensures both uploaded and GCS files are shown
-                            files = await apiCall(`http://localhost:8000/api/data/combined-files?public_bucket=${previouslyConnectedBucket}`);
+                            files = await apiCall(getApiUrl(`/api/data/combined-files?public_bucket=${previouslyConnectedBucket}`));
                         } else {
                             // Get only uploaded files from default bucket
-                            const defaultFiles = await apiCall('http://localhost:8000/api/data/default-bucket/files');
+                            const defaultFiles = await apiCall(getApiUrl('/api/data/default-bucket/files'));
                             files = defaultFiles.map(file => ({
                                 ...file,
                                 source: 'uploaded',
@@ -2471,7 +2471,7 @@
             try {
                 showModalMessage('Deleting file...', 'info');
                 
-                const response = await fetch(`http://localhost:8000/api/data/bucket/ai-analysis-default-bucket/file/${fileName}`, {
+                const response = await fetch(getApiUrl(`/api/data/bucket/ai-analysis-default-bucket/file/${fileName}`), {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json',
@@ -2493,9 +2493,9 @@
                         let files = [];
                         
                         if (previouslyConnectedBucket && previouslyConnectedBucket !== 'ai-analysis-default-bucket') {
-                            files = await apiCall(`http://localhost:8000/api/data/combined-files?public_bucket=${previouslyConnectedBucket}`);
+                            files = await apiCall(getApiUrl(`/api/data/combined-files?public_bucket=${previouslyConnectedBucket}`));
                         } else {
-                            const defaultFiles = await apiCall('http://localhost:8000/api/data/default-bucket/files');
+                            const defaultFiles = await apiCall(getApiUrl('/api/data/default-bucket/files'));
                             files = defaultFiles.map(file => ({
                                 ...file,
                                 source: 'uploaded',
