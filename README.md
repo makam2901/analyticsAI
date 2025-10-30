@@ -5,6 +5,7 @@
 Experience the Analytics AI Platform live!
 
 **🌐 Access the Tool:** [https://analytics-ai-frontend-i73iz6e3wq-uc.a.run.app](https://analytics-ai-frontend-i73iz6e3wq-uc.a.run.app)
+**🎥 Demo:** [https://youtu.be/xPJ12FYTkeA?si=-ke8sMiCSfNZDdTF](video_link)
 
 ![Analytics AI Platform Landing Page](image.png)
 
